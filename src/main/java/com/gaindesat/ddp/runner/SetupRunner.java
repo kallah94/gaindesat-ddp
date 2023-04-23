@@ -39,7 +39,7 @@ public class SetupRunner implements CommandLineRunner {
 
         Permission permission = new Permission();
         permission.setCode("ALL");
-        permission.setTitle("ALLPRIVILEGES");
+        permission.setTitle("ROLE_ADMIN");
         permission.setCategory(categoryRepository.findByCode(category.getCode()).get());
         permissionRepository.save(permission);
 

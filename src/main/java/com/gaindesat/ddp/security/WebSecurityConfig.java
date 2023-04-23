@@ -63,7 +63,7 @@ public class WebSecurityConfig {
         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-       // .antMatchers("/api/test/**").permitAll()
+       .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
         .anyRequest().authenticated();
     
     http.authenticationProvider(authenticationProvider());

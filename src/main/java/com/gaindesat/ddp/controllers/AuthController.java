@@ -1,8 +1,7 @@
 package com.gaindesat.ddp.controllers;
 
-import java.util.HashSet;
+
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -20,8 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gaindesat.ddp.models.ERole;
-import com.gaindesat.ddp.models.Role;
+
 import com.gaindesat.ddp.models.User;
 import com.gaindesat.ddp.payload.request.LoginRequest;
 import com.gaindesat.ddp.payload.request.SignupRequest;
