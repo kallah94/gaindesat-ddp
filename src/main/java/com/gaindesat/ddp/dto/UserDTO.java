@@ -3,29 +3,39 @@ package com.gaindesat.ddp.dto;
 import com.gaindesat.ddp.models.Category;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class UserDTO {
+    private UUID uuid;
     private String username;
     private String email;
     private String password;
     private String fullName;
-
     private boolean status;
-
-    private Category category;
-
-    public UserDTO(String username, String email, String password, String fullName, boolean status, Category category) {
+    public UserDTO(UUID uuid,String username, String email, String password, String fullName, boolean status) {
+        this.uuid = uuid;
         this.username = username;
         this.email = email;
         this.password = password;
         this.fullName = fullName;
         this.status = status;
-        this.category = category;
+    }
+
+    public UserDTO(UUID uuid, boolean status) {
+        this.uuid = uuid;
+        this.status = status;
     }
 
     public UserDTO() {
     }
 
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
     public String getUsername() {
         return username;
     }
@@ -60,14 +70,6 @@ public class UserDTO {
 
     public boolean isStatus() {
         return status;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 
     public void setStatus(boolean status) {

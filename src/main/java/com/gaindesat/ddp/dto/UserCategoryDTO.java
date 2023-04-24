@@ -2,9 +2,11 @@ package com.gaindesat.ddp.dto;
 
 import java.util.UUID;
 
-public class UserPartnerDTO {
+public class UserCategoryDTO {
+
     private UUID userUuid;
-    private UUID partnerUuid;
+
+    private UUID categoryUuid;
 
     public UUID getUserUuid() {
         return userUuid;
@@ -14,11 +16,11 @@ public class UserPartnerDTO {
         this.userUuid = userUuid;
     }
 
-    public UUID getPartnerUuid() {
-        return partnerUuid;
+    public UUID getCategoryUuid() {
+        return categoryUuid;
     }
 
-    public void setPartnerUuid(UUID partnerUuid) {
-        this.partnerUuid = partnerUuid;
+    public void setCategoryUuid(UUID categoryUuid) {
+        this.categoryUuid = categoryUuid;
     }
 }
