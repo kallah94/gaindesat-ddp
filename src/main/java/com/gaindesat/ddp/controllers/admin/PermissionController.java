@@ -1,4 +1,4 @@
-package com.gaindesat.ddp.controllers;
+package com.gaindesat.ddp.controllers.admin;
 
 import com.gaindesat.ddp.dto.RoleDTO;
 import com.gaindesat.ddp.models.Permission;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/admin")
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 public class PermissionController {
 
@@ -29,7 +29,7 @@ public class PermissionController {
     @Autowired
     PermissionRepository permissionRepository;
 
-    @GetMapping("/roles")
+    @GetMapping("/permissions")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Iterable<Permission>> getAllRoles() {
 
@@ -37,7 +37,7 @@ public class PermissionController {
         return new ResponseEntity<>(allRoles, HttpStatus.OK);
     }
 
-    @GetMapping("/roles/{roleId}")
+    @GetMapping("/permissions/{roleId}")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getUser(@PathVariable UUID roleId) {
         Optional<Permission> optionalRole = permissionRepository.findById(roleId);
@@ -47,7 +47,7 @@ public class PermissionController {
                 new ResponseEntity<>("{Role not found !}", HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/roles")
+    @PostMapping("/permissions")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Permission> createRole(@Valid @RequestBody RoleDTO roleDTO) {
         Permission persistencePermission = roleService.populateRole(roleDTO, new Permission());
@@ -63,7 +63,7 @@ public class PermissionController {
         return new ResponseEntity<>(persistencePermission, HttpStatus.CREATED);
     }
 
-    @PutMapping("/roles/{roleId}")
+    @PutMapping("/permissions/{roleId}")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> updateRole(@Valid @RequestBody RoleDTO roleDTO, @PathVariable UUID roleId) {
@@ -77,12 +77,12 @@ public class PermissionController {
         }
     }
 
-    @DeleteMapping("/roles/{roleId}")
+    @DeleteMapping("/permissions/{roleId}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteRole(@PathVariable UUID roleId) {
         permissionRepository.deleteById(roleId);
 
-        return new ResponseEntity<>("role deleted successfully", HttpStatus.OK);
+        return new ResponseEntity<>("permissions deleted successfully", HttpStatus.OK);
     }
 }

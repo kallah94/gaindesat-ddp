@@ -1,4 +1,4 @@
-package com.gaindesat.ddp.controllers;
+package com.gaindesat.ddp.controllers.admin;
 
 
 import com.gaindesat.ddp.dto.UserDTO;
@@ -19,11 +19,10 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import java.net.URI;
 import java.util.Optional;
-import java.util.UUID;
 
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("api/v1/admin")
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 public class UserController {
 

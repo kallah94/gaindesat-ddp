@@ -1,4 +1,4 @@
-package com.gaindesat.ddp.controllers;
+package com.gaindesat.ddp.controllers.admin;
 
 import com.gaindesat.ddp.dto.CategoryDTO;
 import com.gaindesat.ddp.models.Category;
@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("api/v1/admin")
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 public class CategoryController {
 

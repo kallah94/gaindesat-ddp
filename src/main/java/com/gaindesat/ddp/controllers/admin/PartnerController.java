@@ -1,4 +1,4 @@
-package com.gaindesat.ddp.controllers;
+package com.gaindesat.ddp.controllers.admin;
 
 import com.gaindesat.ddp.dto.PartnerDTO;
 import com.gaindesat.ddp.models.Partner;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("api/v1/admin")
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 public class PartnerController {
     PartnerService partnerService;

@@ -1,4 +1,4 @@
-package com.gaindesat.ddp.controllers;
+package com.gaindesat.ddp.controllers.common;
 
 
 import java.util.List;
