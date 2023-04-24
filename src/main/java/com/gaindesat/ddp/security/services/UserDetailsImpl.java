@@ -36,9 +36,6 @@ public class UserDetailsImpl implements UserDetails {
   }
 
   public static UserDetailsImpl build(User user) {
-   /* List<GrantedAuthority> authorities = user.getRoles().stream()
-        .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-        .collect(Collectors.toList());*/
     List<GrantedAuthority> authorities = user.getCategory().getPermissions().stream()
             .map(role -> new SimpleGrantedAuthority(role.getTitle()))
             .collect(Collectors.toList());
@@ -91,7 +88,7 @@ public class UserDetailsImpl implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return true;
+    return false;
   }
 
   @Override
