@@ -1,7 +1,6 @@
 package com.gaindesat.ddp.controllers.partners;
 
 import com.gaindesat.ddp.dto.MemberDTO;
-import com.gaindesat.ddp.dto.UserDTO;
 import com.gaindesat.ddp.models.Partner;
 import com.gaindesat.ddp.models.User;
 import com.gaindesat.ddp.repository.PartnerRepository;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.ws.rs.Produces;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -43,4 +41,6 @@ public class PartnershipController {
                         user.isStatus())), HttpStatus.OK)).orElseGet(() ->
                 new ResponseEntity<>("Error !!!", HttpStatus.NOT_FOUND));
     }
+
+
 }
