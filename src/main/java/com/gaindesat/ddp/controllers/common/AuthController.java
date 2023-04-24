@@ -25,7 +25,6 @@ import com.gaindesat.ddp.payload.request.LoginRequest;
 import com.gaindesat.ddp.payload.request.SignupRequest;
 import com.gaindesat.ddp.payload.response.JwtResponse;
 import com.gaindesat.ddp.payload.response.MessageResponse;
-import com.gaindesat.ddp.repository.RoleRepository;
 import com.gaindesat.ddp.repository.UserRepository;
 import com.gaindesat.ddp.security.jwt.JwtUtils;
 import com.gaindesat.ddp.security.services.UserDetailsImpl;
@@ -39,10 +38,6 @@ public class AuthController {
 
   @Autowired
   UserRepository userRepository;
-
-  @Autowired
-  RoleRepository roleRepository;
-
   @Autowired
   PasswordEncoder encoder;
 

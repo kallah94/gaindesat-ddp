@@ -23,6 +23,7 @@ import java.util.UUID;
 @RequestMapping("api/v1/admin")
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 public class PartnerController {
+    @Autowired
     PartnerService partnerService;
     @Autowired
     PartnerRepository partnerRepository;
@@ -47,18 +48,25 @@ public class PartnerController {
 
     @PostMapping("/partners")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Partner> createPartner(@Valid @RequestBody PartnerDTO partnerDTO) {
-        Partner persistencePartner = this.partnerService.populatePartner(partnerDTO, new Partner());
-        this.partnerRepository.save(persistencePartner);
+    public ResponseEntity<?> createPartner(@Valid @RequestBody PartnerDTO partnerDTO) {
+        Partner persistencePartner = partnerService.populatePartner(partnerDTO, new Partner());
+        System.out.println(persistencePartner.toString());
 
-        HttpHeaders responseHeaders = new HttpHeaders();
-        URI newUserUri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("{id}")
-                .buildAndExpand(persistencePartner.getId())
-                .toUri();
-        responseHeaders.setLocation(newUserUri);
-        return new ResponseEntity<>(persistencePartner, HttpStatus.CREATED);
+        try {
+            partnerRepository.save(persistencePartner);
+            HttpHeaders responseHeaders = new HttpHeaders();
+            URI newUserUri = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("{id}")
+                    .buildAndExpand(persistencePartner.getId())
+                    .toUri();
+            responseHeaders.setLocation(newUserUri);
+            return new ResponseEntity<>(persistencePartner, HttpStatus.CREATED);
+        }
+        catch(Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NO_CONTENT);
+        }
+
     }
 
     @PutMapping("/partners/{partnerId}")

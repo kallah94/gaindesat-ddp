@@ -14,10 +14,6 @@ import java.util.List;
 @Service
 public class UserService implements UserServiceInterface {
 
-    @Autowired
-    UserRepository userRepository;
-
-    private ModelMapper mapper;
     @Override
     public User populateUser(UserDTO userDTO, User persistenceUser) {
         persistenceUser.setUsername(userDTO.getUsername());

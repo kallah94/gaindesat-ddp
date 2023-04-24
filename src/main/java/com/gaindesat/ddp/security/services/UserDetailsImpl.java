@@ -24,19 +24,22 @@ public class UserDetailsImpl implements UserDetails {
 
   private boolean status;
 
+  private UUID partnerId;
+
   @JsonIgnore
   private String password;
 
   private Collection<? extends GrantedAuthority> authorities;
 
   public UserDetailsImpl(UUID uuid, String username, String email, boolean status, String password,
-      Collection<? extends GrantedAuthority> authorities) {
+      Collection<? extends GrantedAuthority> authorities, UUID partnerId) {
     this.uuid = uuid;
     this.username = username;
     this.email = email;
     this.status = status;
     this.password = password;
     this.authorities = authorities;
+    this.partnerId = partnerId;
   }
 
   public static UserDetailsImpl build(User user) {
@@ -44,14 +47,13 @@ public class UserDetailsImpl implements UserDetails {
             .map(role -> new SimpleGrantedAuthority(role.getTitle()))
             .collect(Collectors.toList());
     authorities.add(new SimpleGrantedAuthority(user.getCategory().getCatName()));
-
     return new UserDetailsImpl(
         user.getUuid(),
         user.getUsername(), 
         user.getEmail(),
         user.isStatus(),
         user.getPassword(), 
-        authorities);
+        authorities,user.getPartner().getId());
   }
 
   @Override
@@ -67,6 +69,9 @@ public class UserDetailsImpl implements UserDetails {
     return email;
   }
 
+  public UUID getPartnerId() {
+    return partnerId;
+  }
   @Override
   public String getPassword() {
     return password;
