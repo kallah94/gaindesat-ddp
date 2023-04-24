@@ -28,24 +28,24 @@ public class SetupRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Category category = new Category();
-        category.setCatName("OPERATORS");
-        category.setCode("OPS");
+        category.setCatName("ROLE_ADMIN");
+        category.setCode("ADM");
         categoryRepository.save(category);
 
         Partner partner = new Partner();
-        partner.setCode("TGD");
-        partner.setPartName("TEAMGAINDE");
+        partner.setCode("OPS");
+        partner.setPartName("ROLE_OPERATOR");
         partnerRepository.save(partner);
 
         Permission permission = new Permission();
-        permission.setCode("ALL");
-        permission.setTitle("ROLE_ADMIN");
+        permission.setCode("W");
+        permission.setTitle("Write");
         permission.setCategory(categoryRepository.findByCode(category.getCode()).get());
         permissionRepository.save(permission);
 
         Permission permissionTwo = new Permission();
-        permissionTwo.setCode("W");
-        permissionTwo.setTitle("WRITE");
+        permissionTwo.setCode("R");
+        permissionTwo.setTitle("Read");
         permissionTwo.setCategory(categoryRepository.findByCode(category.getCode()).get());
         permissionRepository.save(permissionTwo);
 

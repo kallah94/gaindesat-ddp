@@ -14,15 +14,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.EntityResponse;
-import org.xml.sax.EntityResolver;
-
-import javax.servlet.http.Part;
-import javax.swing.text.html.parser.Entity;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.core.Response;
 import java.util.Optional;
+
+/*
+ * @Author Moussa FALL
+ */
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/admin")

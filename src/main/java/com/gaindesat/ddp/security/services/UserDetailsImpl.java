@@ -43,6 +43,7 @@ public class UserDetailsImpl implements UserDetails {
     List<GrantedAuthority> authorities = user.getCategory().getPermissions().stream()
             .map(role -> new SimpleGrantedAuthority(role.getTitle()))
             .collect(Collectors.toList());
+    authorities.add(new SimpleGrantedAuthority(user.getCategory().getCatName()));
 
     return new UserDetailsImpl(
         user.getUuid(),

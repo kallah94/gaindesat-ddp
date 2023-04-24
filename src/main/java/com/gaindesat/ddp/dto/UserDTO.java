@@ -1,6 +1,5 @@
 package com.gaindesat.ddp.dto;
 
-import com.gaindesat.ddp.models.Category;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -23,6 +22,14 @@ public class UserDTO {
 
     public UserDTO(UUID uuid, boolean status) {
         this.uuid = uuid;
+        this.status = status;
+    }
+
+    public UserDTO(UUID uuid, String username, String email, String fullName, boolean status) {
+        this.uuid = uuid;
+        this.username = username;
+        this.email = email;
+        this.fullName = fullName;
         this.status = status;
     }
 
