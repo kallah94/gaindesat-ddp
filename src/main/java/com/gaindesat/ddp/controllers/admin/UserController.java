@@ -19,6 +19,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import java.net.URI;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @RestController
@@ -42,7 +43,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getUser(@PathVariable Long userId) {
+    public ResponseEntity<Object> getUser(@PathVariable UUID userId) {
         Optional<User> optionalUser = this.userRepository.findById(userId);
 
         return optionalUser.<ResponseEntity<Object>>map(user ->
@@ -68,7 +69,7 @@ public class UserController {
     @PutMapping("/users/{userId}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> updateUser(@Valid @RequestBody UserDTO userDTO, @PathVariable Long userId) {
+    public ResponseEntity<Object> updateUser(@Valid @RequestBody UserDTO userDTO, @PathVariable UUID userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if(optionalUser.isPresent()) {
             User persistenceUser = userService.populateUser(userDTO, optionalUser.get());
@@ -83,7 +84,7 @@ public class UserController {
     @DeleteMapping("/users/{userId}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Procedure(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+    public ResponseEntity<String> deleteUser(@PathVariable UUID userId) {
         userRepository.deleteById(userId);
 
         return new ResponseEntity<>("user removed successfully", HttpStatus.OK);
