@@ -64,7 +64,7 @@ public class AuthController {
         .collect(Collectors.toList());
 
     return ResponseEntity.ok(new JwtResponse(jwt, 
-                         userDetails.getId(), 
+                         userDetails.getUuid(),
                          userDetails.getUsername(), 
                          userDetails.getEmail(), 
                          roles));
@@ -90,7 +90,6 @@ public class AuthController {
               encoder.encode(signUpRequest.getPassword()),
                 signUpRequest.getFullName());
     userRepository.save(user);
-
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
 }

@@ -59,7 +59,7 @@ public class UserController {
         URI newUserUri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("{id}")
-                .buildAndExpand(persistenceUser.getId())
+                .buildAndExpand(persistenceUser.getUuid())
                 .toUri();
         responseHeaders.setLocation(newUserUri);
         return new ResponseEntity<>(persistenceUser, HttpStatus.CREATED);

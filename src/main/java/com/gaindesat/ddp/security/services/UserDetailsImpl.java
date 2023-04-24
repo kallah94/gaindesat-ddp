@@ -3,6 +3,7 @@ package com.gaindesat.ddp.security.services;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -15,22 +16,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class UserDetailsImpl implements UserDetails {
   private static final long serialVersionUID = 1L;
 
-  private Long id;
+  private UUID uuid;
 
   private String username;
 
   private String email;
+
+  private boolean status;
 
   @JsonIgnore
   private String password;
 
   private Collection<? extends GrantedAuthority> authorities;
 
-  public UserDetailsImpl(Long id, String username, String email, String password,
+  public UserDetailsImpl(UUID uuid, String username, String email, boolean status, String password,
       Collection<? extends GrantedAuthority> authorities) {
-    this.id = id;
+    this.uuid = uuid;
     this.username = username;
     this.email = email;
+    this.status = status;
     this.password = password;
     this.authorities = authorities;
   }
@@ -41,9 +45,10 @@ public class UserDetailsImpl implements UserDetails {
             .collect(Collectors.toList());
 
     return new UserDetailsImpl(
-        user.getId(), 
+        user.getUuid(),
         user.getUsername(), 
         user.getEmail(),
+        user.isStatus(),
         user.getPassword(), 
         authorities);
   }
@@ -53,8 +58,8 @@ public class UserDetailsImpl implements UserDetails {
     return authorities;
   }
 
-  public Long getId() {
-    return id;
+  public UUID getUuid() {
+    return uuid;
   }
 
   public String getEmail() {
@@ -78,7 +83,7 @@ public class UserDetailsImpl implements UserDetails {
 
   @Override
   public boolean isAccountNonLocked() {
-    return true;
+    return status;
   }
 
   @Override
@@ -88,7 +93,7 @@ public class UserDetailsImpl implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return false;
+    return true;
   }
 
   @Override
@@ -98,6 +103,6 @@ public class UserDetailsImpl implements UserDetails {
     if (o == null || getClass() != o.getClass())
       return false;
     UserDetailsImpl user = (UserDetailsImpl) o;
-    return Objects.equals(id, user.id);
+    return Objects.equals(uuid, user.uuid);
   }
 }

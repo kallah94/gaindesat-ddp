@@ -1,18 +1,19 @@
 package com.gaindesat.ddp.payload.response;
 
 import java.util.List;
+import java.util.UUID;
 
 public class JwtResponse {
   private String token;
   private String type = "Bearer";
-  private Long id;
+  private UUID uuid;
   private String username;
   private String email;
   private List<String> roles;
 
-  public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles) {
+  public JwtResponse(String accessToken, UUID uuid, String username, String email, List<String> roles) {
     this.token = accessToken;
-    this.id = id;
+    this.uuid = uuid;
     this.username = username;
     this.email = email;
     this.roles = roles;
@@ -34,12 +35,12 @@ public class JwtResponse {
     this.type = tokenType;
   }
 
-  public Long getId() {
-    return id;
+  public UUID getUuid() {
+    return uuid;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setUuid(UUID uuid) {
+    this.uuid = uuid;
   }
 
   public String getEmail() {

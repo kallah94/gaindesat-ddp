@@ -53,6 +53,7 @@ public class SetupRunner implements CommandLineRunner {
         admin.setFullName("Moussa FALL");
         admin.setEmail("fmoussa@ept.sn");
         admin.setUsername("Admin");
+        admin.setStatus(true);
         admin.setPassword(encoder.encode("moussaFall"));
         admin.setCategory(categoryRepository.findByCode(category.getCode()).get());
         admin.setPartner(partnerRepository.findByCode(partner.getCode()).get());

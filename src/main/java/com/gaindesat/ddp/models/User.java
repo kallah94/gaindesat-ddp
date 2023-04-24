@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -18,8 +19,19 @@ import javax.validation.constraints.Size;
     })
 public class User {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private UUID uuid;
+
+  @Column(columnDefinition = "boolean default false")
+  private boolean status;
+
+  public boolean isStatus() {
+    return status;
+  }
+
+  public void setStatus(boolean status) {
+    this.status = status;
+  }
 
   @NotBlank
   @Size(max = 20)
@@ -81,12 +93,9 @@ public class User {
   public void setCategory(Category category) {
     this.category = category;
   }
-  public Long getId() {
-    return id;
-  }
 
-  public void setId(Long id) {
-    this.id = id;
+  public UUID getUuid() {
+    return uuid;
   }
 
   public String getUsername() {
