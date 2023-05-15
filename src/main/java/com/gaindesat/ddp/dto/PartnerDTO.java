@@ -1,15 +1,29 @@
 package com.gaindesat.ddp.dto;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class PartnerDTO {
 
+    private UUID uuid;
     private String code;
     private String name;
 
-    public PartnerDTO(String code, String name) {
+    private int userCount;
+
+    public PartnerDTO(UUID uuid, String code, String name, int userCount) {
+        this.uuid = uuid;
         this.code = code;
         this.name = name;
+        this.userCount = userCount;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public PartnerDTO() {
@@ -17,6 +31,14 @@ public class PartnerDTO {
 
     public String getCode() {
         return code;
+    }
+
+    public int getUserCount() {
+        return userCount;
+    }
+
+    public void setUserCount(int userCount) {
+        this.userCount = userCount;
     }
 
     public void setCode(String code) {

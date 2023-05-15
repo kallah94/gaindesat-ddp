@@ -16,6 +16,8 @@ import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,10 +32,22 @@ public class PartnerController {
 
     @GetMapping("/partners")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Iterable<Partner>> allPartners() {
+    public ResponseEntity<Iterable<PartnerDTO>> allPartners() {
 
         Iterable<Partner> allPartners = this.partnerRepository.findAll();
-        return new ResponseEntity<>(allPartners, HttpStatus.OK);
+        List<PartnerDTO> partnerDTOList = new ArrayList<>();
+        allPartners.forEach(partner -> {
+            PartnerDTO partnerDTO = new PartnerDTO(
+                    partner.getId(),
+                    partner.getCode(),
+                    partner.getPartName(),
+                    partner.getUsers().size()
+            );
+            partnerDTOList.add(partnerDTO);
+        });
+
+        Iterable<PartnerDTO> partnerDTOIterable = partnerDTOList;
+        return new ResponseEntity<>(partnerDTOIterable, HttpStatus.OK);
     }
 
     @GetMapping("/partners/{partnerId}")

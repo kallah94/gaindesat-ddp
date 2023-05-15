@@ -1,6 +1,7 @@
 package com.gaindesat.ddp.controllers.partners;
 
 import com.gaindesat.ddp.dto.MemberDTO;
+import com.gaindesat.ddp.models.MissionData;
 import com.gaindesat.ddp.models.Partner;
 import com.gaindesat.ddp.models.User;
 import com.gaindesat.ddp.repository.PartnerRepository;
@@ -28,7 +29,7 @@ public class PartnershipController {
     @Autowired
     UserRepository userRepository;
 
-@PreAuthorize("authentication.principal.partnerId == #partnerId")
+    @PreAuthorize("authentication.principal.partnerId == #partnerId")
     @GetMapping("/members/{partnerId}")
     @Produces({MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> getMembers(@Valid @PathVariable UUID partnerId) {
@@ -44,5 +45,14 @@ public class PartnershipController {
                 new ResponseEntity<>("Error !!!", HttpStatus.NOT_FOUND));
     }
 
+    @PreAuthorize("(authentication.principal.partnerId != #partnerId) or hasRole('ADMIN')")
+    @GetMapping("/mission-data/{partnerId}")
+    @Produces({MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> getMissionData(@Valid @PathVariable UUID partnerId) {
+        Optional<Set<MissionData>> optionalMissionData = partnerRepository.findById(partnerId).map(Partner::getMissionData);
 
+        return optionalMissionData.<ResponseEntity<Object>>map(missionData ->
+                new ResponseEntity<>(missionData, HttpStatus.OK)).orElseGet(() ->
+                new ResponseEntity<>("Error !!!", HttpStatus.NOT_FOUND));
+    }
 }
