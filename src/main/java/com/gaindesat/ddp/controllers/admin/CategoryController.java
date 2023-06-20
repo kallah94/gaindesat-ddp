@@ -15,6 +15,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,10 +31,23 @@ public class CategoryController {
 
     @GetMapping("/categories")
     @Produces({MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Iterable<Category>> getAllCategories() {
+    public ResponseEntity<Iterable<CategoryDTO>> getAllCategories() {
 
         Iterable<Category> allCategories = this.categoryRepository.findAll();
-        return new ResponseEntity<>(allCategories, HttpStatus.OK);
+        List<CategoryDTO> categoryDTOList = new ArrayList<>();
+        allCategories.forEach(category -> {
+            CategoryDTO categoryDTO = new CategoryDTO(
+                    category.getId(),
+                    category.getCode(),
+                    category.getCatName(),
+                    category.getUsers().size()
+
+            );
+            categoryDTOList.add(categoryDTO);
+        });
+
+        Iterable<CategoryDTO> allCategoriesDTO = categoryDTOList;
+        return new ResponseEntity<>(allCategoriesDTO, HttpStatus.OK);
     }
 
     @GetMapping(value = "/categories/{catId}")

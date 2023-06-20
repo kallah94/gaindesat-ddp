@@ -1,17 +1,30 @@
 package com.gaindesat.ddp.dto;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class CategoryDTO {
+    private UUID uuid;
     private String code;
     private String catName;
+    private int userCount;
 
-    public CategoryDTO(String code, String catName) {
+    public CategoryDTO(UUID uuid, String code, String catName, int userCount) {
+        this.uuid = uuid;
         this.code = code;
         this.catName = catName;
+        this.userCount = userCount;
     }
 
     public CategoryDTO() {
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getCode() {
@@ -30,6 +43,13 @@ public class CategoryDTO {
         this.catName = catName;
     }
 
+    public int getUserCount() {
+        return userCount;
+    }
+
+    public void setUserCount(int userCount) {
+        this.userCount = userCount;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -48,6 +68,7 @@ public class CategoryDTO {
         return "CategoryDTO{" +
                 "code='" + code + '\'' +
                 ", catName='" + catName + '\'' +
+                ", userCount=" + userCount +
                 '}';
     }
 }
