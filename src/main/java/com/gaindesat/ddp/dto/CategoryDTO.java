@@ -16,8 +16,7 @@ public class CategoryDTO {
         this.userCount = userCount;
     }
 
-    public CategoryDTO() {
-    }
+    public CategoryDTO() {}
 
     public UUID getUuid() {
         return uuid;

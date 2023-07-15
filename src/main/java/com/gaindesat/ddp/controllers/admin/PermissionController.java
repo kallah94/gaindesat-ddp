@@ -1,7 +1,10 @@
 package com.gaindesat.ddp.controllers.admin;
 
+import com.gaindesat.ddp.dto.PermissionDTO;
 import com.gaindesat.ddp.dto.RoleDTO;
+import com.gaindesat.ddp.models.Category;
 import com.gaindesat.ddp.models.Permission;
+import com.gaindesat.ddp.repository.CategoryRepository;
 import com.gaindesat.ddp.repository.PermissionRepository;
 import com.gaindesat.ddp.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +27,11 @@ import java.util.UUID;
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 public class PermissionController {
 
+    @Autowired
     PermissionService roleService;
+
+    @Autowired
+    CategoryRepository categoryRepository;
 
     @Autowired
     PermissionRepository permissionRepository;
@@ -49,18 +56,33 @@ public class PermissionController {
 
     @PostMapping("/permissions")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Permission> createRole(@Valid @RequestBody RoleDTO roleDTO) {
-        Permission persistencePermission = roleService.populateRole(roleDTO, new Permission());
-        this.permissionRepository.save(persistencePermission);
+    public ResponseEntity<?> createRole(@Valid @RequestBody RoleDTO roleDTO) {
+        Optional<Category> category = categoryRepository.findById(UUID.fromString(roleDTO.getCategoryUUID()));
+        if (category.isPresent()) {
+            try {
+                Permission persistencePermission = roleService.populateRole(roleDTO, new Permission(), category.get());
+                this.permissionRepository.save(persistencePermission);
+                HttpHeaders responseHeaders = new HttpHeaders();
+                URI newUserUri = ServletUriComponentsBuilder
+                        .fromCurrentRequest()
+                        .path("{id}")
+                        .buildAndExpand(persistencePermission.getUuid())
+                        .toUri();
+                responseHeaders.setLocation(newUserUri);
+                PermissionDTO permissionDTO = new PermissionDTO(
+                        persistencePermission.getUuid(),
+                        persistencePermission.getCode(),
+                        persistencePermission.getTitle(),
+                        persistencePermission.getCategory().getCatName()
+                );
+                return new ResponseEntity<>(permissionDTO, HttpStatus.CREATED);
+            } catch (Exception e) {
+                return new ResponseEntity<>("{\"message\" :\"Error Occur permission not added\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
 
-        HttpHeaders responseHeaders = new HttpHeaders();
-        URI newUserUri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("{id}")
-                .buildAndExpand(persistencePermission.getId())
-                .toUri();
-        responseHeaders.setLocation(newUserUri);
-        return new ResponseEntity<>(persistencePermission, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>("{\"message\" :\"Category is not founded\"}", HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/permissions/{roleId}")
@@ -81,8 +103,11 @@ public class PermissionController {
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteRole(@PathVariable UUID roleId) {
-        permissionRepository.deleteById(roleId);
-
-        return new ResponseEntity<>("permissions deleted successfully", HttpStatus.OK);
+        try {
+            permissionRepository.deleteById(roleId);
+            return new ResponseEntity<>("{\"message\" :\"Permission Successfully deleted\"}", HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>("{\"message\" :"+exception.getMessage()+"\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

@@ -2,15 +2,18 @@ package com.gaindesat.ddp.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 public class RoleDTO implements Serializable {
 
     private String code;
     private String title;
+    private String categoryUUID;
 
-    public RoleDTO(String code, String title) {
+    public RoleDTO(String code, String title, String categoryUUID) {
         this.code = code;
         this.title = title;
+        this.categoryUUID = categoryUUID;
     }
 
     public RoleDTO() {
@@ -32,6 +35,14 @@ public class RoleDTO implements Serializable {
         this.title = title;
     }
 
+    public String getCategoryUUID() {
+        return categoryUUID;
+    }
+
+    public void setCategoryUUID(String categoryUUID) {
+        this.categoryUUID = categoryUUID;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -50,6 +61,7 @@ public class RoleDTO implements Serializable {
         return "RoleDTO{" +
                 "code='" + code + '\'' +
                 ", title='" + title + '\'' +
+                " categoryUUID'" + categoryUUID + '\'' +
                 '}';
     }
 }

@@ -1,9 +1,11 @@
 package com.gaindesat.ddp.controllers.admin;
 
+import com.gaindesat.ddp.dto.CustomMessage;
 import com.gaindesat.ddp.dto.PartnerDTO;
 import com.gaindesat.ddp.models.Partner;
 import com.gaindesat.ddp.repository.PartnerRepository;
 import com.gaindesat.ddp.service.PartnerService;
+import org.hibernate.HibernateError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -77,10 +80,9 @@ public class PartnerController {
             responseHeaders.setLocation(newUserUri);
             return new ResponseEntity<>(persistencePartner, HttpStatus.CREATED);
         }
-        catch(Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NO_CONTENT);
+        catch (Exception exception) {
+            return new ResponseEntity<>("Error occur! Partner not added", HttpStatus.UNPROCESSABLE_ENTITY);
         }
-
     }
 
     @PutMapping("/partners/{partnerId}")
@@ -102,8 +104,11 @@ public class PartnerController {
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deletePartner(@PathVariable UUID partnerId) {
-        this.partnerRepository.deleteById(partnerId);
-
-        return new ResponseEntity<>("partner removed successfully", HttpStatus.OK);
+        try {
+            this.partnerRepository.deleteById(partnerId);
+            return new ResponseEntity<>( "{\"message\" :\"Partner deleted\"}", HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>("{\"message\" :\"Error Occur partner not deleted\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

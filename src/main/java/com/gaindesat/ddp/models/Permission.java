@@ -13,7 +13,7 @@ public class Permission implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private UUID uuid;
 
     @Column(name = "code", unique = true, nullable = false)
     private String code;
@@ -27,8 +27,8 @@ public class Permission implements Serializable {
     private Category category;
 
 
-    public UUID getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
     public String getCode() {
@@ -53,5 +53,14 @@ public class Permission implements Serializable {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    @Override
+    public String toString() {
+        return "Permission{" +
+                "code='" + code + '\'' +
+                ", title='" + title + '\'' +
+                ", category=" + category +
+                '}';
     }
 }
