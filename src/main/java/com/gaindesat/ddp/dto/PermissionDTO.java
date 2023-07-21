@@ -2,7 +2,7 @@ package com.gaindesat.ddp.dto;
 
 import java.util.UUID;
 
-final public class PermissionDTO {
+public final class PermissionDTO {
     private UUID id;
     private String code;
     private String title;

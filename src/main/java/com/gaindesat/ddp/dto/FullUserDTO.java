@@ -1,10 +1,6 @@
 package com.gaindesat.ddp.dto;
 
-import com.gaindesat.ddp.models.Permission;
-import org.springframework.security.core.parameters.P;
-
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 public class FullUserDTO {
 

@@ -19,7 +19,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/resources")
 public class PartnershipController {
@@ -32,7 +31,7 @@ public class PartnershipController {
     @PreAuthorize("authentication.principal.partnerId == #partnerId")
     @GetMapping("/members/{partnerId}")
     @Produces({MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> getMembers(@Valid @PathVariable UUID partnerId) {
+    public ResponseEntity<Object> getMembers(@Valid @PathVariable UUID partnerId) {
         Optional<Set<User>> optionalUsers = partnerRepository.findById(partnerId).map(Partner::getUsers);
 
         return optionalUsers.<ResponseEntity<Object>>map(users ->
@@ -45,10 +44,10 @@ public class PartnershipController {
                 new ResponseEntity<>("Error !!!", HttpStatus.NOT_FOUND));
     }
 
-    @PreAuthorize("(authentication.principal.partnerId != #partnerId) or hasRole('ADMIN')")
+    @PreAuthorize("(authentication.principal.partnerId != #partnuerId) or hasRole('ADMIN')")
     @GetMapping("/mission-data/{partnerId}")
     @Produces({MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> getMissionData(@Valid @PathVariable UUID partnerId) {
+    public ResponseEntity<Object> getMissionData(@Valid @PathVariable UUID partnerId) {
         Optional<Set<MissionData>> optionalMissionData = partnerRepository.findById(partnerId).map(Partner::getMissionData);
 
         return optionalMissionData.<ResponseEntity<Object>>map(missionData ->

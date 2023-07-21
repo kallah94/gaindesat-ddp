@@ -26,7 +26,7 @@ public class SetupRunner implements CommandLineRunner {
     @Autowired
     PasswordEncoder encoder;
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         Category category = new Category();
         category.setCatName("ROLE_ADMIN");
         category.setCode("ADM");
@@ -40,13 +40,13 @@ public class SetupRunner implements CommandLineRunner {
         Permission permission = new Permission();
         permission.setCode("W");
         permission.setTitle("Write");
-        permission.setCategory(categoryRepository.findByCode(category.getCode()).get());
+        categoryRepository.findByCode(category.getCode()).ifPresent(permission::setCategory);
         permissionRepository.save(permission);
 
         Permission permissionTwo = new Permission();
         permissionTwo.setCode("R");
         permissionTwo.setTitle("Read");
-        permissionTwo.setCategory(categoryRepository.findByCode(category.getCode()).get());
+        categoryRepository.findByCode(category.getCode()).ifPresent(permissionTwo::setCategory);
         permissionRepository.save(permissionTwo);
 
         User admin = new User();
@@ -55,8 +55,8 @@ public class SetupRunner implements CommandLineRunner {
         admin.setUsername("Admin");
         admin.setStatus(true);
         admin.setPassword(encoder.encode("moussaFall"));
-        admin.setCategory(categoryRepository.findByCode(category.getCode()).get());
-        admin.setPartner(partnerRepository.findByCode(partner.getCode()).get());
+        categoryRepository.findByCode(category.getCode()).ifPresent(admin::setCategory);
+        partnerRepository.findByCode(partner.getCode()).ifPresent(admin::setPartner);
         userRepository.save(admin);
     }
 }

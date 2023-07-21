@@ -2,8 +2,7 @@ package com.gaindesat.ddp.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.*;
@@ -17,7 +16,7 @@ import javax.validation.constraints.Size;
       @UniqueConstraint(columnNames = "username"),
       @UniqueConstraint(columnNames = "email") 
     })
-public class User {
+public class User implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID uuid;

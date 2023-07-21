@@ -22,7 +22,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/admin")
-@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 public class CategoryController {
     @Autowired
     CategoryService categoryService;
@@ -46,8 +45,7 @@ public class CategoryController {
             categoryDTOList.add(categoryDTO);
         });
 
-        Iterable<CategoryDTO> allCategoriesDTO = categoryDTOList;
-        return new ResponseEntity<>(allCategoriesDTO, HttpStatus.OK);
+        return new ResponseEntity<>(categoryDTOList, HttpStatus.OK);
     }
 
     @GetMapping(value = "/categories/{catId}")

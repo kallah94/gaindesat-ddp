@@ -2,7 +2,6 @@ package com.gaindesat.ddp.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.UUID;
 
 public class RoleDTO implements Serializable {
 

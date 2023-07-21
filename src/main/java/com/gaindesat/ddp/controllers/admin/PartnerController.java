@@ -1,11 +1,9 @@
 package com.gaindesat.ddp.controllers.admin;
 
-import com.gaindesat.ddp.dto.CustomMessage;
 import com.gaindesat.ddp.dto.PartnerDTO;
 import com.gaindesat.ddp.models.Partner;
 import com.gaindesat.ddp.repository.PartnerRepository;
 import com.gaindesat.ddp.service.PartnerService;
-import org.hibernate.HibernateError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.ConstraintViolationException;
+
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -26,7 +24,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/admin")
-@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 public class PartnerController {
     @Autowired
     PartnerService partnerService;
@@ -49,8 +46,7 @@ public class PartnerController {
             partnerDTOList.add(partnerDTO);
         });
 
-        Iterable<PartnerDTO> partnerDTOIterable = partnerDTOList;
-        return new ResponseEntity<>(partnerDTOIterable, HttpStatus.OK);
+        return new ResponseEntity<>(partnerDTOList, HttpStatus.OK);
     }
 
     @GetMapping("/partners/{partnerId}")
@@ -65,9 +61,8 @@ public class PartnerController {
 
     @PostMapping("/partners")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createPartner(@Valid @RequestBody PartnerDTO partnerDTO) {
+    public ResponseEntity<Object> createPartner(@Valid @RequestBody PartnerDTO partnerDTO) {
         Partner persistencePartner = partnerService.populatePartner(partnerDTO, new Partner());
-        System.out.println(persistencePartner.toString());
 
         try {
             partnerRepository.save(persistencePartner);

@@ -7,6 +7,7 @@ import com.gaindesat.ddp.dto.UserDTO;
 import com.gaindesat.ddp.dto.UserPartnerDTO;
 import com.gaindesat.ddp.models.Category;
 import com.gaindesat.ddp.models.Partner;
+import com.gaindesat.ddp.models.Permission;
 import com.gaindesat.ddp.models.User;
 import com.gaindesat.ddp.repository.CategoryRepository;
 import com.gaindesat.ddp.repository.PartnerRepository;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -30,8 +32,8 @@ import java.util.stream.Collectors;
 
 
 @RestController
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("api/v1/admin")
-@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 public class UserController {
 
     @Autowired
@@ -44,7 +46,7 @@ public class UserController {
     CategoryRepository categoryRepository;
 
     @GetMapping("/users")
-    @Procedure(MediaType.APPLICATION_JSON_VALUE)
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Iterable<FullUserDTO>> getAllUsers() {
 
         Iterable<User> allUsers = this.userRepository.findAll();
@@ -59,13 +61,12 @@ public class UserController {
                     user.getPartner().getPartName(),
                     user.getCategory().getCatName(),
                     user.getCategory().getPermissions().stream().map(
-                            permission -> permission.getTitle()
+                            Permission::getTitle
                     ).collect(Collectors.toList())
             );
             userDTOS.add(fullUserDTO);
         });
-        Iterable<FullUserDTO> fullUserDTOIterable = userDTOS;
-        return new ResponseEntity<>(fullUserDTOIterable, HttpStatus.OK);
+        return new ResponseEntity<>(userDTOS, HttpStatus.OK);
     }
 
     @GetMapping("/users/{userId}")
@@ -110,7 +111,7 @@ public class UserController {
 
     @PostMapping("/update-user-status")
     @Consumes({MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> updateUserStatus(@Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<Object> updateUserStatus(@Valid @RequestBody UserDTO userDTO) {
         Optional<User> optionalUser = userRepository.findById(userDTO.getUuid());
 
         if(optionalUser.isPresent()) {
@@ -124,7 +125,7 @@ public class UserController {
 
     @PostMapping("/set-user-category")
     @Consumes({MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> setCategory(@Valid @RequestBody UserCategoryDTO userCategoryDTO) {
+    public ResponseEntity<Object> setCategory(@Valid @RequestBody UserCategoryDTO userCategoryDTO) {
         Optional<User> optionalUser = this.userRepository
                 .findById(userCategoryDTO.getUserUuid());
 

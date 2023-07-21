@@ -1,7 +1,5 @@
 package com.gaindesat.ddp.dto;
 
-import org.springframework.http.HttpStatus;
-
 public final class CustomMessage {
     private int statusCode;
     private String message;

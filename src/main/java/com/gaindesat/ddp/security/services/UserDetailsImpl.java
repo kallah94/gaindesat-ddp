@@ -16,20 +16,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class UserDetailsImpl implements UserDetails {
   private static final long serialVersionUID = 1L;
 
-  private UUID uuid;
+  private final UUID uuid;
 
-  private String username;
+  private final String username;
 
-  private String email;
+  private final String email;
 
-  private boolean status;
+  private final boolean status;
 
-  private UUID partnerId;
+  private final UUID partnerId;
 
   @JsonIgnore
-  private String password;
+  private final String password;
 
-  private Collection<? extends GrantedAuthority> authorities;
+  private final Collection<? extends GrantedAuthority> authorities;
 
   public UserDetailsImpl(UUID uuid, String username, String email, boolean status, String password,
       Collection<? extends GrantedAuthority> authorities, UUID partnerId) {
@@ -104,11 +104,14 @@ public class UserDetailsImpl implements UserDetails {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
-    UserDetailsImpl user = (UserDetailsImpl) o;
-    return Objects.equals(uuid, user.uuid);
+    if (this == o) return true;
+    if (!(o instanceof UserDetailsImpl)) return false;
+    UserDetailsImpl that = (UserDetailsImpl) o;
+    return status == that.status && Objects.equals(getUuid(), that.getUuid()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getEmail(), that.getEmail()) && Objects.equals(getPartnerId(), that.getPartnerId()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getAuthorities(), that.getAuthorities());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getUuid(), getUsername(), getEmail(), status, getPartnerId(), getPassword(), getAuthorities());
   }
 }
