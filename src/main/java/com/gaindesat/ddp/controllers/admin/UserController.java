@@ -9,9 +9,11 @@ import com.gaindesat.ddp.models.Category;
 import com.gaindesat.ddp.models.Partner;
 import com.gaindesat.ddp.models.Permission;
 import com.gaindesat.ddp.models.User;
+import com.gaindesat.ddp.payload.mail.EmailDetails;
 import com.gaindesat.ddp.repository.CategoryRepository;
 import com.gaindesat.ddp.repository.PartnerRepository;
 import com.gaindesat.ddp.repository.UserRepository;
+import com.gaindesat.ddp.service.EmailService;
 import com.gaindesat.ddp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.query.Procedure;
@@ -38,6 +40,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    EmailService emailService;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -83,6 +87,11 @@ public class UserController {
     public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) {
         User persistenceUser = userService.populateUser(userDTO, new User());
         userRepository.save(persistenceUser);
+        EmailDetails emailDetails = new EmailDetails();
+        emailDetails.setMsgBody("Test Sending email");
+        emailDetails.setRecipient("fmoussa@ept.sn");
+        emailDetails.setSubject("DDP");
+        emailService.sendMail(emailDetails);
 
         HttpHeaders responseHeaders = new HttpHeaders();
         URI newUserUri = ServletUriComponentsBuilder

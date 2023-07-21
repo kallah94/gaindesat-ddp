@@ -41,6 +41,12 @@
 			<version>2.3.5</version>
 		</dependency>
 
+		<!-- Adding Spring-starter-email Start-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<!-- Adding Spring-starter-email End-->
 		<!--Swagger Start-->
 		<dependency>
 			<groupId>io.springfox</groupId>
