@@ -6,13 +6,24 @@ import java.util.UUID;
 
 public class UserDTO {
     private UUID uuid;
+    private UUID partnerUUID;
+    private UUID categoryUUID;
     private String username;
     private String email;
     private String password;
     private String fullName;
     private boolean status;
-    public UserDTO(UUID uuid,String username, String email, String password, String fullName, boolean status) {
+    public UserDTO(UUID uuid,
+                   UUID partnerUUID,
+                   UUID categoryUUID,
+                   String username,
+                   String email,
+                   String password,
+                   String fullName,
+                   boolean status) {
         this.uuid = uuid;
+        this.partnerUUID = partnerUUID;
+        this.categoryUUID = categoryUUID;
         this.username = username;
         this.email = email;
         this.password = password;
@@ -81,6 +92,22 @@ public class UserDTO {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public UUID getPartnerUUID() {
+        return partnerUUID;
+    }
+
+    public void setPartnerUUID(UUID partnerUUID) {
+        this.partnerUUID = partnerUUID;
+    }
+
+    public UUID getCategoryUUID() {
+        return categoryUUID;
+    }
+
+    public void setCategoryUUID(UUID categoryUUID) {
+        this.categoryUUID = categoryUUID;
     }
 
     @Override

@@ -85,22 +85,24 @@ public class UserController {
     @PostMapping("/users")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) {
-        User persistenceUser = userService.populateUser(userDTO, new User());
-        userRepository.save(persistenceUser);
-        EmailDetails emailDetails = new EmailDetails();
-        emailDetails.setMsgBody("Test Sending email");
-        emailDetails.setRecipient("fmoussa@ept.sn");
-        emailDetails.setSubject("DDP");
-        emailService.sendMail(emailDetails);
+        Optional<Category> category = categoryRepository.findById(userDTO.getCategoryUUID());
+        Optional<Partner> partner = partnerRepository.findById(userDTO.getPartnerUUID());
 
-        HttpHeaders responseHeaders = new HttpHeaders();
-        URI newUserUri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("{id}")
-                .buildAndExpand(persistenceUser.getUuid())
-                .toUri();
-        responseHeaders.setLocation(newUserUri);
-        return new ResponseEntity<>(persistenceUser, HttpStatus.CREATED);
+        if(category.isPresent() && partner.isPresent() ) {
+            User persistenceUser = userService.populateUser(userDTO, new User(), category.get(), partner.get());
+            userRepository.save(persistenceUser);
+            System.out.println( emailService.sendFirstConnectionPassword(new EmailDetails(), userDTO));
+            HttpHeaders responseHeaders = new HttpHeaders();
+            URI newUserUri = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("{id}")
+                    .buildAndExpand(persistenceUser.getUuid())
+                    .toUri();
+            responseHeaders.setLocation(newUserUri);
+            return new ResponseEntity<>(persistenceUser, HttpStatus.CREATED);
+        }
+
+        return null;
     }
 
     @PutMapping("/users/{userId}")
