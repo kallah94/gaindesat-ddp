@@ -6,6 +6,7 @@ import com.gaindesat.ddp.models.Category;
 import com.gaindesat.ddp.models.Partner;
 import com.gaindesat.ddp.models.User;
 import com.gaindesat.ddp.serviceinterface.UserServiceInterface;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,12 @@ public class UserService implements UserServiceInterface {
         persistenceUser.setEmail(userDTO.getEmail());
         persistenceUser.setPassword(userDTO.getPassword());
         return persistenceUser;
+    }
+
+    @Override
+    public String randomPasswordGenerator() {
+        RandomString randomString = new RandomString(16);
+        return randomString.nextString();
     }
 
 

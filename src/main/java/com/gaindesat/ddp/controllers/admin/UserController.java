@@ -85,13 +85,14 @@ public class UserController {
     @PostMapping("/users")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) {
+        userDTO.setPassword(userService.randomPasswordGenerator());
         Optional<Category> category = categoryRepository.findById(userDTO.getCategoryUUID());
         Optional<Partner> partner = partnerRepository.findById(userDTO.getPartnerUUID());
 
         if(category.isPresent() && partner.isPresent() ) {
             User persistenceUser = userService.populateUser(userDTO, new User(), category.get(), partner.get());
             userRepository.save(persistenceUser);
-            System.out.println( emailService.sendFirstConnectionPassword(new EmailDetails(), userDTO));
+            emailService.sendFirstConnectionPassword(new EmailDetails(), userDTO);
             HttpHeaders responseHeaders = new HttpHeaders();
             URI newUserUri = ServletUriComponentsBuilder
                     .fromCurrentRequest()
@@ -102,7 +103,7 @@ public class UserController {
             return new ResponseEntity<>(persistenceUser, HttpStatus.CREATED);
         }
 
-        return null;
+        return new ResponseEntity<>(new User(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/users/{userId}")

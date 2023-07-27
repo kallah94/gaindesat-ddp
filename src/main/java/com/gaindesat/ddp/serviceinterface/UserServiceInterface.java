@@ -9,4 +9,6 @@ public interface UserServiceInterface {
 
     User populateUser(UserDTO userDTO, User user, Category category, Partner partner);
     User populateUser(UserDTO userDTO, User user);
+
+    String randomPasswordGenerator();
 }
