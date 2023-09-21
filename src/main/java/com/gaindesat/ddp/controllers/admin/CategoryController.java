@@ -22,6 +22,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/admin")
+@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 public class CategoryController {
     @Autowired
     CategoryService categoryService;
@@ -95,7 +96,6 @@ public class CategoryController {
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteCategory(@PathVariable UUID catId) {
         categoryRepository.deleteById(catId);
-
         return new ResponseEntity<>("category removed successfully", HttpStatus.OK);
     }
 }

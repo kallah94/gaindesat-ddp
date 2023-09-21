@@ -24,6 +24,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/admin")
+@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 public class PermissionController {
 
     @Autowired

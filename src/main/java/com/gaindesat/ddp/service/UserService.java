@@ -1,6 +1,5 @@
 package com.gaindesat.ddp.service;
 
-
 import com.gaindesat.ddp.dto.UserDTO;
 import com.gaindesat.ddp.models.Category;
 import com.gaindesat.ddp.models.Partner;
@@ -42,6 +41,4 @@ public class UserService implements UserServiceInterface {
         RandomString randomString = new RandomString(16);
         return randomString.nextString();
     }
-
-
 }

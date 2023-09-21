@@ -17,6 +17,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.gaindesat.ddp.security.jwt.AuthTokenFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -52,12 +57,24 @@ public class WebSecurityConfig {
   }
 
   @Bean
+  CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration corsConfiguration = new CorsConfiguration();
+    corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "**"));
+    corsConfiguration.setAllowCredentials(true);
+    corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+    corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+    corsConfiguration.setExposedHeaders(Arrays.asList("custom-header1", "custom-header2"));
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", corsConfiguration);
+    return source;
+  }
+  @Bean
   public SecurityFilterChain filterChain(HttpSecurity http, AuthEntryPointJwt unauthorizedHandler) throws Exception {
     http.cors().and().csrf().disable()
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests().antMatchers("/api/auth/**", "/swagger-ui.html", "/swagger-ui/**",
-                    "/swagger-resources/**", "/swagger-resources", "/v2/api-docs/**", "/proxy/**").permitAll()
+                    "/swagger-resources/**", "/swagger-resources", "/v2/api-docs/**", "/proxy/**", "/ws/**").permitAll()
             .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
             .antMatchers("/api/v1/resources/**").hasAnyRole("PARTNER", "ADMIN", "OPERATOR")
             .anyRequest().denyAll();

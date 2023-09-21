@@ -1,6 +1,5 @@
 package com.gaindesat.ddp.controllers.admin;
 
-
 import com.gaindesat.ddp.dto.FullUserDTO;
 import com.gaindesat.ddp.dto.UserCategoryDTO;
 import com.gaindesat.ddp.dto.UserDTO;
@@ -36,6 +35,7 @@ import java.util.stream.Collectors;
 @RestController
 @PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("api/v1/admin")
+@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 public class UserController {
 
     @Autowired
@@ -102,7 +102,6 @@ public class UserController {
             responseHeaders.setLocation(newUserUri);
             return new ResponseEntity<>(persistenceUser, HttpStatus.CREATED);
         }
-
         return new ResponseEntity<>(new User(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -178,7 +177,6 @@ public class UserController {
     @Procedure(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteUser(@PathVariable UUID userId) {
         userRepository.deleteById(userId);
-
         return new ResponseEntity<>("user removed successfully", HttpStatus.OK);
     }
 }
