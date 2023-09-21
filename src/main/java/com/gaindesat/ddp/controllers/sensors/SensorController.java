@@ -5,7 +5,6 @@ import com.gaindesat.ddp.models.Sensor;
 import com.gaindesat.ddp.repository.SensorRepository;
 import com.gaindesat.ddp.service.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
