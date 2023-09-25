@@ -81,7 +81,7 @@ public class SensorController {
             responseHeaders.setLocation(newSensorUrl);
             return new ResponseEntity<>(persistenceSensor, HttpStatus.CREATED);
         }
-        return new ResponseEntity<>("SensorDataCollector not found!!!", HttpStatus.NOT_MODIFIED);
+        return new ResponseEntity<>("{not created}", HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/sensors/{sensorId}")

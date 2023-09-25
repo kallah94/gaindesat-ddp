@@ -7,13 +7,15 @@ public class MissionDataDTO {
 
     private UUID id;
     private Date date;
+    private String parameter;
     private String unit;
     private float value;
     private UUID partnerId;
     private UUID sensorId;
 
-    public MissionDataDTO(Date date, String unit, float value, UUID partnerId, UUID sensorId) {
+    public MissionDataDTO(Date date, String parameter, String unit, float value, UUID partnerId, UUID sensorId) {
         this.date = date;
+        this.parameter = parameter;
         this.unit = unit;
         this.value = value;
         this.partnerId = partnerId;
@@ -77,5 +79,13 @@ public class MissionDataDTO {
 
     public void setSensorId(UUID sensorId) {
         this.sensorId = sensorId;
+    }
+
+    public String getParameter() {
+        return parameter;
+    }
+
+    public void setParameter(String parameter) {
+        this.parameter = parameter;
     }
 }
