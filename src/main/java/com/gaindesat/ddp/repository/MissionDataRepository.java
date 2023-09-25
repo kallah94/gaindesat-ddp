@@ -10,5 +10,5 @@ import java.util.UUID;
 @Repository
 public interface MissionDataRepository extends CrudRepository<MissionData, UUID> {
 
-    Optional<MissionData> findByParamater(String parameter);
+    Optional<MissionData> findByParameter(String parameter);
 }

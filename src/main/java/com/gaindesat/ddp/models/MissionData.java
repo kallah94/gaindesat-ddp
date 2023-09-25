@@ -18,7 +18,7 @@ public class MissionData implements Serializable {
     private String parameter;
 
     @Column(name = "value")
-    private String value;
+    private float value;
 
     @Column(name = "unit")
     private String unit;
@@ -41,5 +41,49 @@ public class MissionData implements Serializable {
 
     public void setPartner(Partner partner) {
         this.partner = partner;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getParameter() {
+        return parameter;
+    }
+
+    public void setParameter(String parameter) {
+        this.parameter = parameter;
+    }
+
+    public float getValue() {
+        return value;
+    }
+
+    public void setValue(float value) {
+        this.value = value;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Sensor getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
     }
 }

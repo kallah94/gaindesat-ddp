@@ -1,5 +1,7 @@
 package com.gaindesat.ddp.controllers.admin;
 
+import com.gaindesat.ddp.repository.MissionDataRepository;
+import com.gaindesat.ddp.service.MissionDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 public class MissionDataController {
 
+    @Autowired
+    MissionDataService missionDataService;
+
+    MissionDataRepository missionDataRepository;
 
 
 }
