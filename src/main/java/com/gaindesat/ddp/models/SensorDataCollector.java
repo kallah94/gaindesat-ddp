@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.Set;
 
 @Entity
 @Table(name = "TB_Balise_de_collecte")
@@ -28,6 +29,9 @@ public class SensorDataCollector implements Serializable {
 
     @Column(name = "elevation", nullable = false)
     private float elevation;
+
+    @OneToMany(mappedBy = "sensorDataCollector", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Sensor> sensors;
 
     public UUID getId() {
         return id;

@@ -94,9 +94,8 @@ public class PermissionController {
             Permission persistencePermission = roleService.populateRole(roleDTO, optionalRole.get());
             permissionRepository.save(persistencePermission);
             return new ResponseEntity<>(persistencePermission, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Not found", HttpStatus.NOT_MODIFIED);
         }
+        return new ResponseEntity<>("Not found", HttpStatus.NOT_MODIFIED);
     }
 
     @DeleteMapping("/permissions/{roleId}")

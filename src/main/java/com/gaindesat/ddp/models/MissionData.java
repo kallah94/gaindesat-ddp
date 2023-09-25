@@ -3,6 +3,7 @@ package com.gaindesat.ddp.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -13,31 +14,26 @@ public class MissionData implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "temperature")
-    private String temperature;
+    @Column(name = "parameter")
+    private String parameter;
 
-    @Column(name = "holt")
-    private String holt;
+    @Column(name = "value")
+    private String value;
+
+    @Column(name = "unit")
+    private String unit;
+
+    @Column(name = "date")
+    private Date date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "partner_id")
     private Partner partner;
 
-    public String getTemperature() {
-        return temperature;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sensor_id")
+    private Sensor sensor;
 
-    public void setTemperature(String temperature) {
-        this.temperature = temperature;
-    }
-
-    public String getHolt() {
-        return holt;
-    }
-
-    public void setHolt(String holt) {
-        this.holt = holt;
-    }
 
     public Partner getPartner() {
         return partner;

@@ -3,7 +3,9 @@ package com.gaindesat.ddp.service;
 import com.gaindesat.ddp.dto.SensorDataCollectorDTO;
 import com.gaindesat.ddp.models.SensorDataCollector;
 import com.gaindesat.ddp.serviceinterface.SensorDataCollectorServiceInterface;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SensorDataCollectorService implements SensorDataCollectorServiceInterface {
     /**
      * @param sensorDataCollectorDTO 

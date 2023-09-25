@@ -9,6 +9,7 @@ public class SensorDTO {
     private String code;
     private String name;
     private String type;
+    private String  sensorDataCollectorId;
     private List<String> parameters;
 
     public SensorDTO(UUID uuid, String code, String name, String type, List<String> parameters) {
@@ -16,6 +17,20 @@ public class SensorDTO {
         this.code = code;
         this.name = name;
         this.type = type;
+        this.parameters = parameters;
+    }
+
+    public SensorDTO(UUID uuid,
+                     String code,
+                     String name,
+                     String type,
+                     String sensorDataCollectorId,
+                     List<String> parameters) {
+        this.uuid = uuid;
+        this.code = code;
+        this.name = name;
+        this.type = type;
+        this.sensorDataCollectorId = sensorDataCollectorId;
         this.parameters = parameters;
     }
 
@@ -60,4 +75,11 @@ public class SensorDTO {
         this.parameters = parameters;
     }
 
+    public String getSensorDataCollectorId() {
+        return sensorDataCollectorId;
+    }
+
+    public void setSensorDataCollectorId(String sensorDataCollectorId) {
+        this.sensorDataCollectorId = sensorDataCollectorId;
+    }
 }

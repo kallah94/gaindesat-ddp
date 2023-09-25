@@ -1,7 +1,9 @@
-package com.gaindesat.ddp.controllers.sensors;
+package com.gaindesat.ddp.controllers.admin;
 
 import com.gaindesat.ddp.dto.SensorDTO;
 import com.gaindesat.ddp.models.Sensor;
+import com.gaindesat.ddp.models.SensorDataCollector;
+import com.gaindesat.ddp.repository.SensorDataCollectorRepository;
 import com.gaindesat.ddp.repository.SensorRepository;
 import com.gaindesat.ddp.service.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class SensorController {
     @Autowired
     SensorRepository sensorRepository;
 
+    @Autowired
+    SensorDataCollectorRepository sensorDataCollectorRepository;
+
     @GetMapping("/sensors")
     @Produces({MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Iterable<SensorDTO>> getAllSensors() {
@@ -41,6 +46,7 @@ public class SensorController {
                     sensor.getCode(),
                     sensor.getName(),
                     sensor.getType(),
+                    sensor.getSensorDataCollector().getId().toString(),
                     sensor.getParameters()
             );
             sensorDTOList.add(sensorDTO);
@@ -60,18 +66,22 @@ public class SensorController {
 
     @PostMapping("/sensors")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Sensor> createSensor(@RequestBody SensorDTO sensorDTO) {
-        Sensor persistenceSensor = sensorService.populateSensor(sensorDTO, new Sensor());
-        sensorRepository.save(persistenceSensor);
+    public ResponseEntity<Object> createSensor(@RequestBody SensorDTO sensorDTO) {
+        Optional<SensorDataCollector> sensorDataCollector = sensorDataCollectorRepository.findById(UUID.fromString(sensorDTO.getSensorDataCollectorId()));
+        if (sensorDataCollector.isPresent()) {
+            Sensor persistenceSensor = sensorService.populateSensor(sensorDTO, new Sensor(), sensorDataCollector.get());
+            sensorRepository.save(persistenceSensor);
 
-        HttpHeaders responseHeaders = new HttpHeaders();
-        URI newSensorUrl = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("{id}")
-                .buildAndExpand(persistenceSensor.getId())
-                .toUri();
-        responseHeaders.setLocation(newSensorUrl);
-        return new ResponseEntity<>(persistenceSensor, HttpStatus.CREATED);
+            HttpHeaders responseHeaders = new HttpHeaders();
+            URI newSensorUrl = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("{id}")
+                    .buildAndExpand(persistenceSensor.getId())
+                    .toUri();
+            responseHeaders.setLocation(newSensorUrl);
+            return new ResponseEntity<>(persistenceSensor, HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>("SensorDataCollector not found!!!", HttpStatus.NOT_MODIFIED);
     }
 
     @PutMapping("/sensors/{sensorId}")

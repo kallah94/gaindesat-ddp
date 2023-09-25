@@ -19,7 +19,7 @@ import java.net.URI;
 import java.util.*;
 
 @RestController
-@RequestMapping("api/vi/admin")
+@RequestMapping("api/v1/admin")
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 public class SensorDataCollectorController {
 

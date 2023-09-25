@@ -1,5 +1,7 @@
 package com.gaindesat.ddp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -27,6 +29,12 @@ public class Sensor implements Serializable {
     @Column(name = "parametresmesurees", nullable = false)
     @ElementCollection()
     private List<String> parameters;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "sensorDataCollector_id")
+    private SensorDataCollector sensorDataCollector;
+
 
     public UUID getId() {
         return id;
@@ -62,6 +70,15 @@ public class Sensor implements Serializable {
 
     public void setParameters(List<String> parameters) {
         this.parameters = parameters;
+    }
+
+
+    public SensorDataCollector getSensorDataCollector() {
+        return sensorDataCollector;
+    }
+
+    public void setSensorDataCollector(SensorDataCollector sensorDataCollector) {
+        this.sensorDataCollector = sensorDataCollector;
     }
 
     @Override

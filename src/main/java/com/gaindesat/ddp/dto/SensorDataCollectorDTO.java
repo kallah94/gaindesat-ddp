@@ -1,6 +1,5 @@
 package com.gaindesat.ddp.dto;
 
-import com.gaindesat.ddp.models.SensorDataCollector;
 
 import java.util.UUID;
 
