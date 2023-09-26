@@ -61,18 +61,23 @@ public class CategoryController {
 
     @PostMapping("/categories")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Category> createCategory(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<Object> createCategory(@RequestBody CategoryDTO categoryDTO) {
         Category persistenceCategory = categoryService.populateCategory(categoryDTO, new Category());
-        categoryRepository.save(persistenceCategory);
+        try {
+            categoryRepository.save(persistenceCategory);
 
-        HttpHeaders responseHeaders = new HttpHeaders();
-        URI newCatUri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("{id}")
-                .buildAndExpand(persistenceCategory.getId())
-                .toUri();
-        responseHeaders.setLocation(newCatUri);
-        return new ResponseEntity<>(persistenceCategory, HttpStatus.CREATED);
+            HttpHeaders responseHeaders = new HttpHeaders();
+            URI newCatUri = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("{id}")
+                    .buildAndExpand(persistenceCategory.getId())
+                    .toUri();
+            responseHeaders.setLocation(newCatUri);
+            return new ResponseEntity<>(persistenceCategory, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error occur, Request Aborted", HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @PutMapping("/categories/{catId}")
