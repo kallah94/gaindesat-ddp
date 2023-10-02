@@ -14,8 +14,8 @@ public class Sensor implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private UUID id;
+    @Column(name = "uuid")
+    private UUID uuid;
 
     @Column(name = "code", unique = true, nullable = false)
     private String code;
@@ -36,8 +36,8 @@ public class Sensor implements Serializable {
     private SensorDataCollector sensorDataCollector;
 
 
-    public UUID getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
     public String getCode() {
@@ -82,25 +82,23 @@ public class Sensor implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "Sensor{" +
-                "code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", parameters=" + parameters +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Sensor)) return false;
         Sensor sensor = (Sensor) o;
-        return Objects.equals(id, sensor.id) && Objects.equals(getCode(), sensor.getCode()) && Objects.equals(getName(), sensor.getName()) && Objects.equals(getType(), sensor.getType()) && Objects.equals(getParameters(), sensor.getParameters());
+        return Objects.equals(uuid, sensor.uuid)
+                &&
+                Objects.equals(getCode(), sensor.getCode())
+                &&
+                Objects.equals(getName(), sensor.getName())
+                &&
+                Objects.equals(getType(), sensor.getType())
+                &&
+                Objects.equals(getParameters(), sensor.getParameters());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, getCode(), getName(), getType(), getParameters());
+        return Objects.hash(uuid, getCode(), getName(), getType(), getParameters());
     }
 }

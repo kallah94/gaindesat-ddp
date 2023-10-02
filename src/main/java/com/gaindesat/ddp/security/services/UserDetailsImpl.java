@@ -53,7 +53,7 @@ public class UserDetailsImpl implements UserDetails {
         user.getEmail(),
         user.isStatus(),
         user.getPassword(), 
-        authorities,user.getPartner().getId());
+        authorities,user.getPartner().getUuid());
   }
 
   @Override

@@ -1,5 +1,7 @@
 package com.gaindesat.ddp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -12,8 +14,8 @@ public class SensorDataCollector implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private UUID id;
+    @Column(name = "uuid")
+    private UUID uuid;
 
     @Column(name = "code", unique = true, nullable = false)
     private String code;
@@ -33,8 +35,13 @@ public class SensorDataCollector implements Serializable {
     @OneToMany(mappedBy = "sensorDataCollector", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Sensor> sensors;
 
-    public UUID getId() {
-        return id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "partner_id")
+    private Partner partner;
+
+    public UUID getUuid() {
+        return uuid;
     }
 
     public String getCode() {
@@ -82,23 +89,40 @@ public class SensorDataCollector implements Serializable {
         if (this == o) return true;
         if (!(o instanceof SensorDataCollector)) return false;
         SensorDataCollector that = (SensorDataCollector) o;
-        return Float.compare(that.getLongitude(), getLongitude()) == 0 && Float.compare(that.getLatitude(), getLatitude()) == 0 && Float.compare(that.getElevation(), getElevation()) == 0 && getId().equals(that.getId()) && getCode().equals(that.getCode()) && getName().equals(that.getName());
+        return Float.compare(
+                that.getLongitude(),
+                getLongitude()) == 0
+                &&
+                Float.compare(
+                        that.getLatitude(),
+                        getLatitude()) == 0
+                &&
+                Float.compare(
+                        that.getElevation(),
+                        getElevation()) == 0
+                && getUuid().equals(that.getUuid())
+                && getCode().equals(that.getCode())
+                && getName().equals(that.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getCode(), getName(), getLongitude(), getLatitude(), getElevation());
+        return Objects.hash(getUuid(), getCode(), getName(), getLongitude(), getLatitude(), getElevation());
     }
 
-    @Override
-    public String toString() {
-        return "SensorDataCollector{" +
-                "id=" + id +
-                ", code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", longitude=" + longitude +
-                ", latitude=" + latitude +
-                ", elevation=" + elevation +
-                '}';
+    public Set<Sensor> getSensors() {
+        return sensors;
+    }
+
+    public void setSensors(Set<Sensor> sensors) {
+        this.sensors = sensors;
+    }
+
+    public Partner getPartner() {
+        return partner;
+    }
+
+    public void setPartner(Partner partner) {
+        this.partner = partner;
     }
 }

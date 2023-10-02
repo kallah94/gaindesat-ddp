@@ -12,17 +12,15 @@ public class MissionDataService implements MissionDataServiceInterface {
     /**
      * @param missionDataDTO 
      * @param missionData
-     * @param partner
      * @param sensor
      * @return
      */
     @Override
-    public MissionData populateMissionData(MissionDataDTO missionDataDTO, MissionData missionData, Partner partner, Sensor sensor) {
+    public MissionData populateMissionData(MissionDataDTO missionDataDTO, MissionData missionData, Sensor sensor) {
         missionData.setDate(missionDataDTO.getDate());
         missionData.setParameter(missionDataDTO.getParameter());
         missionData.setUnit(missionDataDTO.getUnit());
         missionData.setValue(missionDataDTO.getValue());
-        missionData.setPartner(partner);
         missionData.setSensor(sensor);
         return missionData;
     }

@@ -3,6 +3,7 @@ package com.gaindesat.ddp.controllers.partners;
 import com.gaindesat.ddp.dto.MemberDTO;
 import com.gaindesat.ddp.models.MissionData;
 import com.gaindesat.ddp.models.Partner;
+import com.gaindesat.ddp.models.SensorDataCollector;
 import com.gaindesat.ddp.models.User;
 import com.gaindesat.ddp.repository.PartnerRepository;
 import com.gaindesat.ddp.repository.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.ws.rs.Produces;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -44,14 +46,17 @@ public class PartnershipController {
                 new ResponseEntity<>("Error !!!", HttpStatus.NOT_FOUND));
     }
 
-    @PreAuthorize("(authentication.principal.partnerId != #partnuerId) or hasRole('ADMIN')")
-    @GetMapping("/mission-data/{partnerId}")
-    @Produces({MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Object> getMissionData(@Valid @PathVariable UUID partnerId) {
-        Optional<Set<MissionData>> optionalMissionData = partnerRepository.findById(partnerId).map(Partner::getMissionData);
 
-        return optionalMissionData.<ResponseEntity<Object>>map(missionData ->
-                new ResponseEntity<>(missionData, HttpStatus.OK)).orElseGet(() ->
-                new ResponseEntity<>("Error !!!", HttpStatus.NOT_FOUND));
+    @PreAuthorize("(authentication.principal.partnerId == #partnerId) or hasRole('ADMIN')")
+    @GetMapping("/sensor-data-collectors/{partnerId}")
+    @Produces({MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> getPartnerAllSensorDataCollectors(@Valid @PathVariable  UUID partnerId) {
+        Optional<Set<SensorDataCollector>> partnerSensorDataCollectors = this.partnerRepository.findById(partnerId).map(Partner::getSensorDataCollectors);
+        if (partnerSensorDataCollectors.isPresent()) {
+            return new ResponseEntity<>(partnerSensorDataCollectors.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>("No Sensor Data Collector found!!!", HttpStatus.NOT_FOUND);
     }
+
+
 }

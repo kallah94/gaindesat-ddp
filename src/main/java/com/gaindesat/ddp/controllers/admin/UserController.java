@@ -84,7 +84,7 @@ public class UserController {
     }
     @PostMapping("/users")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
         userDTO.setPassword(userService.randomPasswordGenerator());
         Optional<Category> category = categoryRepository.findById(userDTO.getCategoryUUID());
         Optional<Partner> partner = partnerRepository.findById(userDTO.getPartnerUUID());
@@ -100,9 +100,16 @@ public class UserController {
                     .buildAndExpand(persistenceUser.getUuid())
                     .toUri();
             responseHeaders.setLocation(newUserUri);
-            return new ResponseEntity<>(persistenceUser, HttpStatus.CREATED);
+            UserDTO responseUser = new UserDTO(
+                    persistenceUser.getUuid(),
+                    persistenceUser.getUsername(),
+                    persistenceUser.getEmail(),
+                    persistenceUser.getFullName(),
+                    persistenceUser.isStatus()
+            );
+            return new ResponseEntity<>(responseUser, HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(new User(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new UserDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/users/{userId}")

@@ -37,7 +37,7 @@ public class CategoryController {
         List<CategoryDTO> categoryDTOList = new ArrayList<>();
         allCategories.forEach(category -> {
             CategoryDTO categoryDTO = new CategoryDTO(
-                    category.getId(),
+                    category.getUuid(),
                     category.getCode(),
                     category.getCatName(),
                     category.getUsers().size()
@@ -70,7 +70,7 @@ public class CategoryController {
             URI newCatUri = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("{id}")
-                    .buildAndExpand(persistenceCategory.getId())
+                    .buildAndExpand(persistenceCategory.getUuid())
                     .toUri();
             responseHeaders.setLocation(newCatUri);
             return new ResponseEntity<>(persistenceCategory, HttpStatus.CREATED);

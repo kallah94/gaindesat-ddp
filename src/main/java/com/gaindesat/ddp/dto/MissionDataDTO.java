@@ -1,51 +1,49 @@
 package com.gaindesat.ddp.dto;
 
-import java.util.Date;
+
 import java.util.UUID;
 
 public class MissionDataDTO {
 
-    private UUID id;
-    private Date date;
+    private UUID uuid;
+    private String date;
     private String parameter;
     private String unit;
     private float value;
-    private UUID partnerId;
-    private UUID sensorId;
+    private UUID sensorUuid;
 
-    public MissionDataDTO(Date date, String parameter, String unit, float value, UUID partnerId, UUID sensorId) {
+    public MissionDataDTO(String date, String parameter, String unit, float value, UUID sensorUuid) {
         this.date = date;
         this.parameter = parameter;
         this.unit = unit;
         this.value = value;
-        this.partnerId = partnerId;
-        this.sensorId = sensorId;
+        this.sensorUuid = sensorUuid;
     }
 
-    public MissionDataDTO(UUID id, Date date, String unit, float value, UUID partnerId, UUID sensorId) {
-        this.id = id;
+    public MissionDataDTO(UUID uuid, String date, String parameter, String unit, float value, UUID sensorUuid) {
+        this.uuid = uuid;
         this.date = date;
+        this.parameter = parameter;
         this.unit = unit;
         this.value = value;
-        this.partnerId = partnerId;
-        this.sensorId = sensorId;
+        this.sensorUuid = sensorUuid;
     }
 
     public MissionDataDTO() {}
 
-    public UUID getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -65,20 +63,12 @@ public class MissionDataDTO {
         this.value = value;
     }
 
-    public UUID getPartnerId() {
-        return partnerId;
+    public UUID getSensorUuid() {
+        return sensorUuid;
     }
 
-    public void setPartnerId(UUID partnerId) {
-        this.partnerId = partnerId;
-    }
-
-    public UUID getSensorId() {
-        return sensorId;
-    }
-
-    public void setSensorId(UUID sensorId) {
-        this.sensorId = sensorId;
+    public void setSensorUuid(UUID sensorUuid) {
+        this.sensorUuid = sensorUuid;
     }
 
     public String getParameter() {

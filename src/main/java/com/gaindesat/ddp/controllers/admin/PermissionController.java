@@ -1,7 +1,6 @@
 package com.gaindesat.ddp.controllers.admin;
 
 import com.gaindesat.ddp.dto.PermissionDTO;
-import com.gaindesat.ddp.dto.RoleDTO;
 import com.gaindesat.ddp.models.Category;
 import com.gaindesat.ddp.models.Permission;
 import com.gaindesat.ddp.repository.CategoryRepository;
@@ -56,11 +55,11 @@ public class PermissionController {
 
     @PostMapping("/permissions")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createRole(@Valid @RequestBody RoleDTO roleDTO) {
-        Optional<Category> category = categoryRepository.findById(UUID.fromString(roleDTO.getCategoryUUID()));
+    public ResponseEntity<?> createRole(@Valid @RequestBody PermissionDTO permissionDTO) {
+        Optional<Category> category = categoryRepository.findById(permissionDTO.getCategoryUUID());
         if (category.isPresent()) {
             try {
-                Permission persistencePermission = roleService.populateRole(roleDTO, new Permission(), category.get());
+                Permission persistencePermission = roleService.populateRole(permissionDTO, new Permission(), category.get());
                 this.permissionRepository.save(persistencePermission);
                 HttpHeaders responseHeaders = new HttpHeaders();
                 URI newUserUri = ServletUriComponentsBuilder
@@ -69,13 +68,14 @@ public class PermissionController {
                         .buildAndExpand(persistencePermission.getUuid())
                         .toUri();
                 responseHeaders.setLocation(newUserUri);
-                PermissionDTO permissionDTO = new PermissionDTO(
+                PermissionDTO responsePermission = new PermissionDTO(
                         persistencePermission.getUuid(),
                         persistencePermission.getCode(),
                         persistencePermission.getTitle(),
+                        persistencePermission.getCategory().getUuid(),
                         persistencePermission.getCategory().getCatName()
                 );
-                return new ResponseEntity<>(permissionDTO, HttpStatus.CREATED);
+                return new ResponseEntity<>(responsePermission, HttpStatus.CREATED);
             } catch (Exception e) {
                 return new ResponseEntity<>("{\"message\" :\"Error Occur permission not added\"}", HttpStatus.INTERNAL_SERVER_ERROR);
             }
@@ -88,10 +88,10 @@ public class PermissionController {
     @PutMapping("/permissions/{roleId}")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> updateRole(@Valid @RequestBody RoleDTO roleDTO, @PathVariable UUID roleId) {
+    public ResponseEntity<Object> updateRole(@Valid @RequestBody PermissionDTO permissionDTO, @PathVariable UUID roleId) {
         Optional<Permission> optionalRole = permissionRepository.findById(roleId);
         if(optionalRole.isPresent()) {
-            Permission persistencePermission = roleService.populateRole(roleDTO, optionalRole.get());
+            Permission persistencePermission = roleService.populateRole(permissionDTO, optionalRole.get());
             permissionRepository.save(persistencePermission);
             return new ResponseEntity<>(persistencePermission, HttpStatus.OK);
         }

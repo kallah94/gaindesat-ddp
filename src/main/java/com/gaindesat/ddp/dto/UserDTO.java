@@ -13,6 +13,14 @@ public class UserDTO {
     private String password;
     private String fullName;
     private boolean status;
+
+    public UserDTO(UUID uuid, String username, String email, String fullName, boolean status) {
+        this.uuid = uuid;
+        this.username = username;
+        this.email = email;
+        this.fullName = fullName;
+        this.status = status;
+    }
     public UserDTO(UUID uuid,
                    UUID partnerUUID,
                    UUID categoryUUID,
@@ -36,13 +44,7 @@ public class UserDTO {
         this.status = status;
     }
 
-    public UserDTO(UUID uuid, String username, String email, String fullName, boolean status) {
-        this.uuid = uuid;
-        this.username = username;
-        this.email = email;
-        this.fullName = fullName;
-        this.status = status;
-    }
+
 
     public UserDTO() {
     }

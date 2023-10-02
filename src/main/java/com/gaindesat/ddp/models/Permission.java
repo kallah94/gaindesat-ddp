@@ -13,6 +13,7 @@ public class Permission implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "uuid")
     private UUID uuid;
 
     @Column(name = "code", unique = true, nullable = false)
@@ -22,7 +23,7 @@ public class Permission implements Serializable {
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_uuid", nullable = false)
     @JsonIgnore
     private Category category;
 
@@ -55,12 +56,4 @@ public class Permission implements Serializable {
         this.category = category;
     }
 
-    @Override
-    public String toString() {
-        return "Permission{" +
-                "code='" + code + '\'' +
-                ", title='" + title + '\'' +
-                ", category=" + category +
-                '}';
-    }
 }

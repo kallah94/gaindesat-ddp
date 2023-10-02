@@ -42,11 +42,11 @@ public class SensorController {
         List<SensorDTO> sensorDTOList = new ArrayList<>();
         allSensors.forEach(sensor -> {
             SensorDTO sensorDTO = new SensorDTO(
-                    sensor.getId(),
+                    sensor.getUuid(),
                     sensor.getCode(),
                     sensor.getName(),
                     sensor.getType(),
-                    sensor.getSensorDataCollector().getId().toString(),
+                    sensor.getSensorDataCollector().getUuid(),
                     sensor.getParameters()
             );
             sensorDTOList.add(sensorDTO);
@@ -67,7 +67,7 @@ public class SensorController {
     @PostMapping("/sensors")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> createSensor(@RequestBody SensorDTO sensorDTO) {
-        Optional<SensorDataCollector> sensorDataCollector = sensorDataCollectorRepository.findById(UUID.fromString(sensorDTO.getSensorDataCollectorId()));
+        Optional<SensorDataCollector> sensorDataCollector = sensorDataCollectorRepository.findById(sensorDTO.getSensorDataCollectorUUID());
         if (sensorDataCollector.isPresent()) {
             Sensor persistenceSensor = sensorService.populateSensor(sensorDTO, new Sensor(), sensorDataCollector.get());
             sensorRepository.save(persistenceSensor);
@@ -76,7 +76,7 @@ public class SensorController {
             URI newSensorUrl = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("{id}")
-                    .buildAndExpand(persistenceSensor.getId())
+                    .buildAndExpand(persistenceSensor.getUuid())
                     .toUri();
             responseHeaders.setLocation(newSensorUrl);
             return new ResponseEntity<>(persistenceSensor, HttpStatus.CREATED);

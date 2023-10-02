@@ -13,8 +13,8 @@ public class Partner implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private UUID id;
+    @Column(name = "uuid")
+    private UUID uuid;
 
     @Column(name = "code", unique = true, nullable = false)
     private String code;
@@ -26,18 +26,10 @@ public class Partner implements Serializable {
     private Set<User> users;
 
     @OneToMany(mappedBy = "partner", cascade = CascadeType.ALL)
-    private Set<MissionData> missionData;
+    private Set<SensorDataCollector> sensorDataCollectors;
 
-    public Set<MissionData> getMissionData() {
-        return missionData;
-    }
-
-    public void setMissionData(Set<MissionData> missionData) {
-        this.missionData = missionData;
-    }
-
-    public UUID getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
     public String getCode() {
@@ -62,5 +54,13 @@ public class Partner implements Serializable {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public Set<SensorDataCollector> getSensorDataCollectors() {
+        return sensorDataCollectors;
+    }
+
+    public void setSensorDataCollectors(Set<SensorDataCollector> sensorDataCollectors) {
+        this.sensorDataCollectors = sensorDataCollectors;
     }
 }

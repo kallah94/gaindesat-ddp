@@ -12,7 +12,8 @@ public class MissionData implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @Column(name = "uuid")
+    private UUID uuid;
 
     @Column(name = "parameter")
     private String parameter;
@@ -24,27 +25,14 @@ public class MissionData implements Serializable {
     private String unit;
 
     @Column(name = "date")
-    private Date date;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "partner_id")
-    private Partner partner;
+    private String date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sensor_id")
     private Sensor sensor;
 
-
-    public Partner getPartner() {
-        return partner;
-    }
-
-    public void setPartner(Partner partner) {
-        this.partner = partner;
-    }
-
-    public UUID getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
     public String getParameter() {
@@ -71,11 +59,11 @@ public class MissionData implements Serializable {
         this.unit = unit;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

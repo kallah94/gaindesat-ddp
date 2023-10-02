@@ -19,6 +19,7 @@ import javax.validation.constraints.Size;
 public class User implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "uuid")
   private UUID uuid;
 
   @Column(columnDefinition = "boolean default false")
@@ -51,12 +52,12 @@ public class User implements Serializable {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JsonIgnore
-  @JoinColumn(name = "category_id")
+  @JoinColumn(name = "category_uuid")
   private Category category;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JsonIgnore
-  @JoinColumn(name = "partner_id")
+  @JoinColumn(name = "partner_uuid")
   private Partner partner;
 
   public Partner getPartner() {

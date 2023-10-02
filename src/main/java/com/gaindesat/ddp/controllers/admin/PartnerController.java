@@ -39,7 +39,7 @@ public class PartnerController {
         List<PartnerDTO> partnerDTOList = new ArrayList<>();
         allPartners.forEach(partner -> {
             PartnerDTO partnerDTO = new PartnerDTO(
-                    partner.getId(),
+                    partner.getUuid(),
                     partner.getCode(),
                     partner.getPartName(),
                     partner.getUsers().size()
@@ -71,7 +71,7 @@ public class PartnerController {
             URI newUserUri = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("{id}")
-                    .buildAndExpand(persistencePartner.getId())
+                    .buildAndExpand(persistencePartner.getUuid())
                     .toUri();
             responseHeaders.setLocation(newUserUri);
             return new ResponseEntity<>(persistencePartner, HttpStatus.CREATED);

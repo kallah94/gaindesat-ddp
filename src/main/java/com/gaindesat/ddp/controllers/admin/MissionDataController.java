@@ -2,10 +2,8 @@ package com.gaindesat.ddp.controllers.admin;
 
 import com.gaindesat.ddp.dto.MissionDataDTO;
 import com.gaindesat.ddp.models.MissionData;
-import com.gaindesat.ddp.models.Partner;
 import com.gaindesat.ddp.models.Sensor;
 import com.gaindesat.ddp.repository.MissionDataRepository;
-import com.gaindesat.ddp.repository.PartnerRepository;
 import com.gaindesat.ddp.repository.SensorRepository;
 import com.gaindesat.ddp.service.MissionDataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,24 +21,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 @RestController
 @RequestMapping("api/v1/admin")
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 public class MissionDataController {
-
     @Autowired
     MissionDataService missionDataService;
-
     @Autowired
     MissionDataRepository missionDataRepository;
-
-    @Autowired
-    PartnerRepository partnerRepository;
-
     @Autowired
     SensorRepository sensorRepository;
-
     @GetMapping("/mission-data")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Iterable<MissionDataDTO>> getALlMissionData() {
@@ -48,12 +38,12 @@ public class MissionDataController {
         List<MissionDataDTO> missionDataDTOList = new ArrayList<>();
         allMissionData.forEach(missionData -> {
             MissionDataDTO missionDataDTO = new MissionDataDTO(
-                    missionData.getId(),
+                    missionData.getUuid(),
                     missionData.getDate(),
+                    missionData.getParameter(),
                     missionData.getUnit(),
                     missionData.getValue(),
-                    missionData.getPartner().getId(),
-                    missionData.getSensor().getId()
+                    missionData.getSensor().getUuid()
             );
             missionDataDTOList.add(missionDataDTO);
         });
@@ -74,26 +64,28 @@ public class MissionDataController {
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> createMissionData(@RequestBody MissionDataDTO missionDataDTO) {
-        Optional<Sensor> sensor = sensorRepository.findById(missionDataDTO.getSensorId());
+        Optional<Sensor> sensor = sensorRepository.findById(missionDataDTO.getSensorUuid());
         if(sensor.isPresent()) {
-            Optional<Partner> partner = partnerRepository.findById(missionDataDTO.getPartnerId());
-            if (partner.isPresent()) {
-                MissionData missionData = missionDataService.populateMissionData(missionDataDTO, new MissionData() ,partner.get(), sensor.get());
+                MissionData missionData = missionDataService.populateMissionData(missionDataDTO, new MissionData() ,sensor.get());
                 missionDataRepository.save(missionData);
-
+                MissionDataDTO responseMissionDTO = new MissionDataDTO(
+                        missionData.getUuid(),
+                        missionData.getDate(),
+                        missionData.getParameter(),
+                        missionData.getUnit(),
+                        missionData.getValue(),
+                        missionData.getSensor().getUuid()
+                );
                 HttpHeaders responseHeaders = new HttpHeaders();
                 URI newSensorUrl = ServletUriComponentsBuilder
                         .fromCurrentRequest()
                         .path("{id}")
-                        .buildAndExpand(missionData.getId())
+                        .buildAndExpand(missionData.getUuid())
                         .toUri();
                 responseHeaders.setLocation(newSensorUrl);
-                return new ResponseEntity<>(missionData, HttpStatus.CREATED);
-            } else {
-                return new ResponseEntity<>("Partner not found !! Operation aborded", HttpStatus.NOT_FOUND);
-            }
+                return new ResponseEntity<>(responseMissionDTO, HttpStatus.CREATED);
         }
-        return new ResponseEntity<>("Sensor not found !!!", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Sensor not found !!", HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/mission-data/{missionDataId}")
@@ -105,6 +97,6 @@ public class MissionDataController {
             missionDataRepository.deleteById(missionDataId);
             return new ResponseEntity<>(deletedMissionData.get(), HttpStatus.OK);
         }
-        return new ResponseEntity<>("Mission data not found!!!", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Mission data not found !!!", HttpStatus.NOT_FOUND);
     }
 }
