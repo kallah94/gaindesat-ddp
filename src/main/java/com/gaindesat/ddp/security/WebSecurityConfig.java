@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +25,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 @Configuration
+@EnableMethodSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
   @Autowired
@@ -76,7 +78,7 @@ public class WebSecurityConfig {
             .authorizeRequests().antMatchers("/api/auth/**", "/swagger-ui.html", "/swagger-ui/**",
                     "/swagger-resources/**", "/swagger-resources", "/v2/api-docs/**", "/proxy/**", "/ws/**").permitAll()
             .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
-            .antMatchers("/api/v1/resources/**").hasAnyRole("PARTNER", "ADMIN", "OPERATOR")
+            .antMatchers("/api/v1/resources/**").hasAnyRole("PARTNER", "ADMIN", "OPERATOR", "GUEST")
             .anyRequest().denyAll();
     
     http.authenticationProvider(authenticationProvider());

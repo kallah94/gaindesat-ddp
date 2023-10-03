@@ -24,7 +24,7 @@ public class UserDetailsImpl implements UserDetails {
 
   private final boolean status;
 
-  private final UUID partnerId;
+  private final UUID partnerUUID;
 
   @JsonIgnore
   private final String password;
@@ -32,14 +32,14 @@ public class UserDetailsImpl implements UserDetails {
   private final Collection<? extends GrantedAuthority> authorities;
 
   public UserDetailsImpl(UUID uuid, String username, String email, boolean status, String password,
-      Collection<? extends GrantedAuthority> authorities, UUID partnerId) {
+      Collection<? extends GrantedAuthority> authorities, UUID partnerUUID) {
     this.uuid = uuid;
     this.username = username;
     this.email = email;
     this.status = status;
     this.password = password;
     this.authorities = authorities;
-    this.partnerId = partnerId;
+    this.partnerUUID = partnerUUID;
   }
 
   public static UserDetailsImpl build(User user) {
@@ -53,7 +53,8 @@ public class UserDetailsImpl implements UserDetails {
         user.getEmail(),
         user.isStatus(),
         user.getPassword(), 
-        authorities,user.getPartner().getUuid());
+        authorities,
+        user.getPartner().getUuid());
   }
 
   @Override
@@ -69,8 +70,8 @@ public class UserDetailsImpl implements UserDetails {
     return email;
   }
 
-  public UUID getPartnerId() {
-    return partnerId;
+  public UUID getPartnerUUID() {
+    return partnerUUID;
   }
   @Override
   public String getPassword() {
@@ -107,11 +108,23 @@ public class UserDetailsImpl implements UserDetails {
     if (this == o) return true;
     if (!(o instanceof UserDetailsImpl)) return false;
     UserDetailsImpl that = (UserDetailsImpl) o;
-    return status == that.status && Objects.equals(getUuid(), that.getUuid()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getEmail(), that.getEmail()) && Objects.equals(getPartnerId(), that.getPartnerId()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getAuthorities(), that.getAuthorities());
+    return status == that.status
+            &&
+            Objects.equals(getUuid(), that.getUuid())
+            &&
+            Objects.equals(getUsername(), that.getUsername())
+            &&
+            Objects.equals(getEmail(), that.getEmail())
+            &&
+            Objects.equals(getPartnerUUID(), that.getPartnerUUID())
+            &&
+            Objects.equals(getPassword(), that.getPassword())
+            &&
+            Objects.equals(getAuthorities(), that.getAuthorities());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getUuid(), getUsername(), getEmail(), status, getPartnerId(), getPassword(), getAuthorities());
+    return Objects.hash(getUuid(), getUsername(), getEmail(), status, getPartnerUUID(), getPassword(), getAuthorities());
   }
 }
