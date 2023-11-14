@@ -1,8 +1,10 @@
 package com.gaindesat.ddp.controllers.admin;
 
 import com.gaindesat.ddp.dto.MissionDataDTO;
+import com.gaindesat.ddp.dto.MissionDataDTOFromDT;
 import com.gaindesat.ddp.models.MissionData;
 import com.gaindesat.ddp.models.Sensor;
+import com.gaindesat.ddp.models.SensorDataCollector;
 import com.gaindesat.ddp.repository.MissionDataRepository;
 import com.gaindesat.ddp.repository.SensorRepository;
 import com.gaindesat.ddp.service.MissionDataService;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.management.remote.rmi.RMIConnectionImpl;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import java.net.URI;
@@ -86,6 +89,25 @@ public class MissionDataController {
                 return new ResponseEntity<>(responseMissionDTO, HttpStatus.CREATED);
         }
         return new ResponseEntity<>("Sensor not found !!", HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/mission-data/dt")
+    @Consumes(MediaType.APPLICATION_JSON_VALUE)
+    @Produces(MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> createMissionDataFromDT(@RequestBody MissionDataDTOFromDT missionDataDTOFromDT) {
+        Optional<Sensor> missionDataSensor = missionDataService.missionDataSensor(missionDataDTOFromDT.getId_station(), missionDataDTOFromDT.getSensor_id());
+
+        if (missionDataSensor.isPresent()) {
+            MissionData missionData = new MissionData();
+            missionData.setSensor(missionDataSensor.get());
+            missionData.setUnit("default");
+            missionData.setParameter(missionDataDTOFromDT.getParameter_type());
+            missionData.setValue(missionDataDTOFromDT.getParameter_value());
+            missionData.setDate(missionDataDTOFromDT.getMeasure_timestamp());
+            missionDataRepository.save(missionData);
+            return new ResponseEntity<>(missionDataDTOFromDT, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("not saved", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @DeleteMapping("/mission-data/{missionDataId}")

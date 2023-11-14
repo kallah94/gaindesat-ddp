@@ -1,6 +1,5 @@
 package com.gaindesat.ddp.dto;
 
-
 import java.util.UUID;
 
 public class MissionDataDTO {
@@ -27,6 +26,14 @@ public class MissionDataDTO {
         this.unit = unit;
         this.value = value;
         this.sensorUuid = sensorUuid;
+    }
+
+    public MissionDataDTO(UUID uuid, String date, String parameter, String unit, float value) {
+        this.uuid = uuid;
+        this.date = date;
+        this.parameter = parameter;
+        this.unit = unit;
+        this.value = value;
     }
 
     public MissionDataDTO() {}

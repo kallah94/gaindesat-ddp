@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -80,6 +81,7 @@ public class Sensor implements Serializable {
     public void setSensorDataCollector(SensorDataCollector sensorDataCollector) {
         this.sensorDataCollector = sensorDataCollector;
     }
+
 
     @Override
     public boolean equals(Object o) {

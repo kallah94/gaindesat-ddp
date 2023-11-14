@@ -19,18 +19,14 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import java.net.URI;
 import java.util.*;
-
 @RestController
 @RequestMapping("api/v1/admin")
 @CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 public class SensorDataCollectorController {
-
     @Autowired
     SensorDataCollectorService sensorDataCollectorService;
-
     @Autowired
     SensorDataCollectorRepository sensorDataCollectorRepository;
-
     @Autowired
     PartnerRepository partnerRepository;
     @GetMapping("/sensor-data-collectors")
@@ -52,10 +48,8 @@ public class SensorDataCollectorController {
             );
             sensorDataCollectorDTOList.add(sensorDataCollectorDTO);
         });
-
         return new ResponseEntity<>(sensorDataCollectorDTOList, HttpStatus.OK);
     }
-
     @GetMapping(value = "/sensor-data-collectors/{sensorDataCollectorId}")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getSensorDataCollector(@PathVariable UUID sensorDataCollectorId) {
@@ -65,7 +59,6 @@ public class SensorDataCollectorController {
             new ResponseEntity<>(sensorDataCollector, HttpStatus.OK)).orElseGet(() ->
                 new ResponseEntity<>("{SensorDataCollector not Found}", HttpStatus.NOT_FOUND));
     }
-
     @PostMapping("/sensor-data-collectors")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> createSensorDataCollector(@RequestBody SensorDataCollectorDTO sensorDataCollectorDTO) {
@@ -93,10 +86,8 @@ public class SensorDataCollectorController {
             responseHeaders.setLocation(newSensorDataCollectorUri);
             return new ResponseEntity<>(responseSensorDataCollector, HttpStatus.CREATED);
         }
-
         return new ResponseEntity<>("{Not created}", HttpStatus.NOT_FOUND);
     }
-
     @PutMapping("/sensor-data-collectors/{sensorDataCollectorId}")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
@@ -109,7 +100,6 @@ public class SensorDataCollectorController {
         }
         return new ResponseEntity<>("Not found!!!", HttpStatus.NOT_MODIFIED);
     }
-
     @DeleteMapping("sensor-data-collectors/{sensorDataCollectorId}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
