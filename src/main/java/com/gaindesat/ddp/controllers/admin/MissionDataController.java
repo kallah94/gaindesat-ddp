@@ -96,18 +96,21 @@ public class MissionDataController {
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> createMissionDataFromDT(@RequestBody MissionDataDTOFromDT missionDataDTOFromDT) {
         Optional<Sensor> missionDataSensor = missionDataService.missionDataSensor(missionDataDTOFromDT.getId_station(), missionDataDTOFromDT.getSensor_id());
-
-        if (missionDataSensor.isPresent()) {
-            MissionData missionData = new MissionData();
-            missionData.setSensor(missionDataSensor.get());
-            missionData.setUnit("default");
-            missionData.setParameter(missionDataDTOFromDT.getParameter_type());
-            missionData.setValue(missionDataDTOFromDT.getParameter_value());
-            missionData.setDate(missionDataDTOFromDT.getMeasure_timestamp());
-            missionDataRepository.save(missionData);
-            return new ResponseEntity<>(missionDataDTOFromDT, HttpStatus.OK);
+        try{
+            if (missionDataSensor.isPresent()) {
+                MissionData missionData = new MissionData();
+                missionData.setSensor(missionDataSensor.get());
+                missionData.setUnit("default");
+                missionData.setParameter(missionDataDTOFromDT.getParameter_type());
+                missionData.setValue(missionDataDTOFromDT.getParameter_value());
+                missionData.setDate(missionDataDTOFromDT.getMeasure_timestamp());
+                missionDataRepository.save(missionData);
+                return new ResponseEntity<>(missionDataDTOFromDT, HttpStatus.OK);
+            }
+            return new ResponseEntity<>("not saved", HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error occur", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>("not saved", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @DeleteMapping("/mission-data/{missionDataId}")
