@@ -2,6 +2,7 @@ package com.gaindesat.ddp.controllers.partners;
 
 import com.gaindesat.ddp.dto.MemberDTO;
 import com.gaindesat.ddp.dto.MissionDataDTO;
+import com.gaindesat.ddp.dto.SensorDataCollectorDTO;
 import com.gaindesat.ddp.models.*;
 import com.gaindesat.ddp.repository.MissionDataRepository;
 import com.gaindesat.ddp.repository.PartnerRepository;
@@ -52,7 +53,6 @@ public class PartnershipController {
                         user.isStatus())), HttpStatus.OK)).orElseGet(() ->
                 new ResponseEntity<>("Error !!!", HttpStatus.NOT_FOUND));
     }
-
     /**
      * @param partnerUUID of partner
      * @return the list of sensorDataCollectors of the corresponding partner for the given partnerUUID
@@ -86,7 +86,6 @@ public class PartnershipController {
                                 )), HttpStatus.OK)).orElseGet(() ->
                 new ResponseEntity<>("Error !!!", HttpStatus.NOT_FOUND));
     }
-
     /**
      * @param partnerUUID of partner
      * @param sensorDataCollectorUUID of a specific sensorDataCollector
@@ -102,5 +101,19 @@ public class PartnershipController {
             return new ResponseEntity<>(missionDataList, HttpStatus.OK);
         }
         return new ResponseEntity<>("error occur", HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * @param partnerUUID of partner
+     * */
+    @GetMapping("/mission-data/{partnerUUID}")
+    @Produces({MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> getPartnerMissionData(@Valid @PathVariable UUID partnerUUID) {
+        List<MissionDataDTO> missionDataDTOList = new ArrayList<>();
+        Iterable<SensorDataCollector> sensorDataCollectors = sensorDataCollectorRepository.findSensorDataCollectorByPartnerUuid(partnerUUID);
+        sensorDataCollectors.forEach(sensorDataCollector -> {
+            missionDataDTOList.addAll(missionDataService.getAllSensorDataCollectorMissionData(sensorDataCollector));
+        });
+        return new ResponseEntity<>(missionDataDTOList, HttpStatus.OK);
     }
 }

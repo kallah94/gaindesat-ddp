@@ -73,9 +73,7 @@ public class SensorDataCollectorController {
                     persistenceSensorDataCollector.getLongitude(),
                     persistenceSensorDataCollector.getLatitude(),
                     persistenceSensorDataCollector.getElevation(),
-                    persistenceSensorDataCollector.getPartner().getUuid(),
-                    persistenceSensorDataCollector.getPartner().getCode(),
-                    persistenceSensorDataCollector.getSensors()
+                    persistenceSensorDataCollector.getPartner().getUuid()
             );
             HttpHeaders responseHeaders = new HttpHeaders();
             URI newSensorDataCollectorUri = ServletUriComponentsBuilder
@@ -106,8 +104,12 @@ public class SensorDataCollectorController {
     public ResponseEntity<Object> deleteSensorDataCollector(@PathVariable UUID sensorDataCollectorId) {
         Optional<SensorDataCollector> deletedSensorDataCollector = sensorDataCollectorRepository.findById(sensorDataCollectorId);
         if (deletedSensorDataCollector.isPresent()) {
-            sensorDataCollectorRepository.deleteById(sensorDataCollectorId);
-            return new ResponseEntity<>(deletedSensorDataCollector, HttpStatus.OK);
+            try {
+                sensorDataCollectorRepository.deleteById(sensorDataCollectorId);
+                return new ResponseEntity<>(deletedSensorDataCollector, HttpStatus.OK);
+            } catch (Exception exception) {
+                return new ResponseEntity<>("SensorDataCollector can't be delete !!!", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
         return new ResponseEntity<>("SensorDataCollector not found !!!", HttpStatus.NOT_FOUND);
     }

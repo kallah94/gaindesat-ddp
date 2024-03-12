@@ -8,13 +8,15 @@ public class MissionDataDTOFromDT {
     private long parameter_value;
     private String parameter_type;
     private String measure_timestamp;
+    private String unit;
 
-    public MissionDataDTOFromDT(String id_station, String sensor_id, long parameter_value, String parameter_type, String measure_timestamp) {
+    public MissionDataDTOFromDT(String id_station, String sensor_id, long parameter_value, String parameter_type, String measure_timestamp, String unit) {
         this.id_station = id_station;
         this.sensor_id = sensor_id;
         this.parameter_value = parameter_value;
         this.parameter_type = parameter_type;
         this.measure_timestamp = measure_timestamp;
+        this.unit = unit;
     }
 
     public String getParameter_type() {
@@ -55,5 +57,13 @@ public class MissionDataDTOFromDT {
 
     public void setMeasure_timestamp(String measure_timestamp) {
         this.measure_timestamp = measure_timestamp;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 }

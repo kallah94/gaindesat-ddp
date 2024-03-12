@@ -84,7 +84,7 @@ public class UserController {
     }
     @PostMapping("/users")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<FullUserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
         userDTO.setPassword(userService.randomPasswordGenerator());
         Optional<Category> category = categoryRepository.findById(userDTO.getCategoryUUID());
         Optional<Partner> partner = partnerRepository.findById(userDTO.getPartnerUUID());
@@ -107,9 +107,19 @@ public class UserController {
                     persistenceUser.getFullName(),
                     persistenceUser.isStatus()
             );
-            return new ResponseEntity<>(responseUser, HttpStatus.CREATED);
+            FullUserDTO fullUserDTO = new FullUserDTO(
+                    persistenceUser.getUuid(),
+                    persistenceUser.isStatus(),
+                    persistenceUser.getUsername(),
+                    persistenceUser.getEmail(),
+                    persistenceUser.getFullName(),
+                    persistenceUser.getPartner().getPartName(),
+                    persistenceUser.getCategory().getCatName(),
+                    persistenceUser.getCategory().getPermissions().stream().map(Permission::getTitle).collect(Collectors.toList())
+            );
+            return new ResponseEntity<>(fullUserDTO, HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(new UserDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new FullUserDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/users/{userId}")

@@ -9,13 +9,16 @@ public class JwtResponse {
   private UUID uuid;
   private String username;
   private String email;
-  private List<String> roles;
 
-  public JwtResponse(String accessToken, UUID uuid, String username, String email, List<String> roles) {
+  private UUID partnerUUID;
+  private final List<String> roles;
+
+  public JwtResponse(String accessToken, UUID uuid, String username, String email, UUID partnerUUID, List<String> roles) {
     this.token = accessToken;
     this.uuid = uuid;
     this.username = username;
     this.email = email;
+    this.partnerUUID = partnerUUID;
     this.roles = roles;
   }
 
@@ -61,5 +64,13 @@ public class JwtResponse {
 
   public List<String> getRoles() {
     return roles;
+  }
+
+  public UUID getPartnerUUID() {
+    return partnerUUID;
+  }
+
+  public void setPartnerUUID(UUID partnerUUID) {
+    this.partnerUUID = partnerUUID;
   }
 }

@@ -46,7 +46,7 @@ public class MissionDataController {
                     missionData.getParameter(),
                     missionData.getUnit(),
                     missionData.getValue(),
-                    missionData.getSensor().getUuid()
+                    missionData.getSensor().getCode()
             );
             missionDataDTOList.add(missionDataDTO);
         });
@@ -77,7 +77,7 @@ public class MissionDataController {
                         missionData.getParameter(),
                         missionData.getUnit(),
                         missionData.getValue(),
-                        missionData.getSensor().getUuid()
+                        missionData.getSensor().getCode()
                 );
                 HttpHeaders responseHeaders = new HttpHeaders();
                 URI newSensorUrl = ServletUriComponentsBuilder
@@ -90,7 +90,6 @@ public class MissionDataController {
         }
         return new ResponseEntity<>("Sensor not found !!", HttpStatus.NOT_FOUND);
     }
-
     @PostMapping("/mission-data/dt")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
@@ -100,7 +99,7 @@ public class MissionDataController {
             if (missionDataSensor.isPresent()) {
                 MissionData missionData = new MissionData();
                 missionData.setSensor(missionDataSensor.get());
-                missionData.setUnit("default");
+                missionData.setUnit(missionDataDTOFromDT.getUnit());
                 missionData.setParameter(missionDataDTOFromDT.getParameter_type());
                 missionData.setValue(missionDataDTOFromDT.getParameter_value());
                 missionData.setDate(missionDataDTOFromDT.getMeasure_timestamp());

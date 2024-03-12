@@ -72,7 +72,6 @@ public class PermissionController {
                         persistencePermission.getUuid(),
                         persistencePermission.getCode(),
                         persistencePermission.getTitle(),
-                        persistencePermission.getCategory().getUuid(),
                         persistencePermission.getCategory().getCatName()
                 );
                 return new ResponseEntity<>(responsePermission, HttpStatus.CREATED);
@@ -84,7 +83,6 @@ public class PermissionController {
             return new ResponseEntity<>("{\"message\" :\"Category is not founded\"}", HttpStatus.NOT_FOUND);
         }
     }
-
     @PutMapping("/permissions/{roleId}")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
@@ -97,7 +95,6 @@ public class PermissionController {
         }
         return new ResponseEntity<>("Not found", HttpStatus.NOT_MODIFIED);
     }
-
     @DeleteMapping("/permissions/{roleId}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)

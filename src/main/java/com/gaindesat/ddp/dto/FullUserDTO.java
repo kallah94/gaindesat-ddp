@@ -27,6 +27,10 @@ public class FullUserDTO {
         this.roles = roles;
     }
 
+    public FullUserDTO() {
+
+    }
+
     public UUID getUuid() {
         return uuid;
     }

@@ -85,17 +85,14 @@ public class CategoryController {
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> updateCategory(@RequestBody CategoryDTO categoryDTO, @PathVariable UUID catId) {
         Optional<Category> categoryOptional = categoryRepository.findById(catId);
-
         if(categoryOptional.isPresent()) {
             Category persistenceCategory = categoryService.populateCategory(categoryDTO, categoryOptional.get());
             categoryRepository.save(persistenceCategory);
-
             return new ResponseEntity<>(persistenceCategory, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Not found !", HttpStatus.NOT_MODIFIED);
         }
     }
-
     @DeleteMapping("/categories/{catId}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)

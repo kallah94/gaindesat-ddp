@@ -77,7 +77,8 @@ public class MissionDataService implements MissionDataServiceInterface {
                                 missionData.getDate(),
                                 missionData.getParameter(),
                                 missionData.getUnit(),
-                                missionData.getValue()
+                                missionData.getValue(),
+                                missionData.getSensor().getCode()
                         )).collect(Collectors.toList());
                 missionDataList.addAll(missionDataDTOList);
             }
