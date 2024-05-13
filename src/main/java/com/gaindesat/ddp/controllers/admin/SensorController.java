@@ -67,7 +67,7 @@ public class SensorController {
     @PostMapping("/sensors")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> createSensor(@RequestBody SensorDTO sensorDTO) {
-        Optional<SensorDataCollector> sensorDataCollector = sensorDataCollectorRepository.findById(sensorDTO.getSensorDataCollectorUUID());
+        Optional<SensorDataCollector> sensorDataCollector = sensorDataCollectorRepository.findById(sensorDTO.getStationUuid());
         if (sensorDataCollector.isPresent()) {
             Sensor persistenceSensor = sensorService.populateSensor(sensorDTO, new Sensor(), sensorDataCollector.get());
             sensorRepository.save(persistenceSensor);

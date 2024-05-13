@@ -1,6 +1,9 @@
 package com.gaindesat.ddp.dto;
 
+import com.gaindesat.ddp.models.Parameter;
+
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class SensorDTO {
@@ -9,10 +12,10 @@ public class SensorDTO {
     private String code;
     private String name;
     private String type;
-    private UUID  sensorDataCollectorUUID;
-    private List<String> parameters;
+    private UUID  stationUuid;
+    private Set<Parameter> parameters;
 
-    public SensorDTO(UUID uuid, String code, String name, String type, List<String> parameters) {
+    public SensorDTO(UUID uuid, String code, String name, String type, Set<Parameter> parameters) {
         this.uuid = uuid;
         this.code = code;
         this.name = name;
@@ -24,13 +27,13 @@ public class SensorDTO {
                      String code,
                      String name,
                      String type,
-                     UUID sensorDataCollectorUUID,
-                     List<String> parameters) {
+                     UUID stationUuid,
+                     Set<Parameter> parameters) {
         this.uuid = uuid;
         this.code = code;
         this.name = name;
         this.type = type;
-        this.sensorDataCollectorUUID = sensorDataCollectorUUID;
+        this.stationUuid = stationUuid;
         this.parameters = parameters;
     }
 
@@ -67,19 +70,31 @@ public class SensorDTO {
         this.type = type;
     }
 
-    public List<String> getParameters() {
+    public Set<Parameter> getParameters() {
         return parameters;
     }
 
-    public void setParameters(List<String> parameters) {
+    public void setParameters(Set<Parameter> parameters) {
         this.parameters = parameters;
     }
 
-    public UUID getSensorDataCollectorUUID() {
-        return sensorDataCollectorUUID;
+    public UUID getStationUuid() {
+        return stationUuid;
     }
 
-    public void setSensorDataCollectorId(UUID sensorDataCollectorUUID) {
-        this.sensorDataCollectorUUID = sensorDataCollectorUUID;
+    public void setStationUuid(UUID stationUuid) {
+            this.stationUuid = stationUuid;
+    }
+
+    @Override
+    public String toString() {
+        return "SensorDTO{" +
+                "uuid=" + uuid +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", stationUuid=" + stationUuid +
+                ", parameters=" + parameters +
+                '}';
     }
 }

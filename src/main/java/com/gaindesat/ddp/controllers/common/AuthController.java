@@ -29,6 +29,7 @@ import com.gaindesat.ddp.security.jwt.JwtUtils;
 import com.gaindesat.ddp.security.services.UserDetailsImpl;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api/auth")
 public class AuthController {
   @Autowired

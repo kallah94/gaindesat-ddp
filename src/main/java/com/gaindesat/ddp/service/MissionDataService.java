@@ -59,10 +59,7 @@ public class MissionDataService implements MissionDataServiceInterface {
 
     public Set<MissionData> getSensorMissionDataList(UUID sensorUUID) {
         Optional<Set<MissionData>> missionDataList = missionDataRepository.findAllBySensorUuid(sensorUUID);
-        if (missionDataList.isPresent()) {
-            return missionDataList.get();
-        }
-        return (Set<MissionData>) new ArrayList<MissionData>();
+        return missionDataList.orElseGet(() -> (Set<MissionData>) new ArrayList<MissionData>());
     }
 
     public List<MissionDataDTO> getAllSensorDataCollectorMissionData(SensorDataCollector sensorDataCollector) {
@@ -89,9 +86,6 @@ public class MissionDataService implements MissionDataServiceInterface {
     public Optional<Sensor> missionDataSensor(String dataCollectorCode, String sensorCode) {
 
         Optional<SensorDataCollector> sensorDataCollector = sensorDataCollectorRepository.findByCode(dataCollectorCode);
-        if (sensorDataCollector.isPresent()) {
-            return sensorDataCollector.get().getSensors().stream().filter(sensor -> sensorCode.equals(sensor.getCode())).findAny();
-        }
-        return null;
+        return sensorDataCollector.map(dataCollector -> dataCollector.getSensors().stream().filter(sensor -> sensorCode.equals(sensor.getCode())).findAny()).orElse(null);
     }
 }
