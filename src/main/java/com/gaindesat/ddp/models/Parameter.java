@@ -2,9 +2,7 @@ package com.gaindesat.ddp.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -25,8 +23,7 @@ public class Parameter implements Serializable {
     @Column(name = "unite", nullable = false)
     private String unite;
 
-    @ManyToMany(mappedBy = "parameters", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<Sensor> sensors = new HashSet<>();
+    // Getters and Setters, equals and hashCode methods
     public UUID getUuid() {
         return uuid;
     }
@@ -55,24 +52,25 @@ public class Parameter implements Serializable {
         this.unite = unite;
     }
 
-    public Set<Sensor> getSensors() {
-        return sensors;
-    }
-
-    public void setSensors(Set<Sensor> sensors) {
-        this.sensors = sensors;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Parameter parameter = (Parameter) o;
-        return Objects.equals(uuid, parameter.uuid) && Objects.equals(name, parameter.name) && Objects.equals(description, parameter.description) && Objects.equals(unite, parameter.unite) && Objects.equals(sensors, parameter.sensors);
+        return Objects.equals(uuid, parameter.uuid) && Objects.equals(name, parameter.name) && Objects.equals(description, parameter.description) && Objects.equals(unite, parameter.unite);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, name, description, unite, sensors);
+        return Objects.hash(uuid, name, description, unite);
+    }
+
+    @Override
+    public String toString() {
+        return "Parameter{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", unite='" + unite + '\'' +
+                '}';
     }
 }

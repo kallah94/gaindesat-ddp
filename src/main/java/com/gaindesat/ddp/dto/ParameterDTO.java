@@ -11,20 +11,17 @@ public class ParameterDTO {
     private String name;
     private String description;
     private String unite;
-    private Set<Sensor> sensors;
     public ParameterDTO() {};
 
     public ParameterDTO(
             UUID uuid,
             String name,
             String unite,
-            String description,
-            Set<Sensor> sensors) {
+            String description) {
         this.uuid = uuid;
         this.name = name;
         this.unite = unite;
         this.description = description;
-        this.sensors = sensors;
     }
     public UUID getUuid() {
         return uuid;
@@ -58,31 +55,12 @@ public class ParameterDTO {
         this.unite = unite;
     }
 
-    public Set<Sensor> getSensors() {
-        return sensors;
-    }
-
-    public void setSensors(Set<Sensor> sensors) {
-        this.sensors = sensors;
-    }
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ParameterDTO that = (ParameterDTO) o;
-        return Objects.equals(uuid, that.uuid);
-    }
-    @Override
-    public int hashCode() {
-        return Objects.hash(uuid);
-    }
     @Override
     public String toString() {
         return "ParameterDTO{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", unite='" + unite + '\'' +
-                ", sensors=" + sensors +
                 '}';
     }
 }

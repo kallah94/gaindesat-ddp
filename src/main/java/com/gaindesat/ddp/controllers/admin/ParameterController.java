@@ -1,13 +1,10 @@
 package com.gaindesat.ddp.controllers.admin;
 
 import com.gaindesat.ddp.dto.ParameterDTO;
-import com.gaindesat.ddp.dto.incoming.IParameterDTO;
 import com.gaindesat.ddp.models.Parameter;
-import com.gaindesat.ddp.models.Sensor;
 import com.gaindesat.ddp.repository.ParameterRepository;
 import com.gaindesat.ddp.repository.SensorRepository;
 import com.gaindesat.ddp.service.ParameterService;
-import com.gaindesat.ddp.service.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -40,32 +37,26 @@ public class ParameterController {
 
     @GetMapping("/parameters")
     @Produces(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Iterable<ParameterDTO>> allParameters() {
+    public ResponseEntity<Iterable<Parameter>> allParameters() {
         Iterable<Parameter> allParameters = this.parameterRepository.findAll();
-        List<ParameterDTO> parameterDTOList = new ArrayList<>();
+       List<ParameterDTO> parameterDTOList = new ArrayList<>();
         allParameters.forEach(parameter -> {
             ParameterDTO parameterDTO = new ParameterDTO(
                     parameter.getUuid(),
                     parameter.getName(),
                     parameter.getUnite(),
-                    parameter.getDescription(),
-                    parameter.getSensors()
+                    parameter.getDescription()
             );
             parameterDTOList.add(parameterDTO);
         });
 
-        return new ResponseEntity<>(parameterDTOList, HttpStatus.OK);
+        return new ResponseEntity<>(allParameters, HttpStatus.OK);
     }
 
     @PostMapping("/parameters")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createParameter(@Valid @RequestBody IParameterDTO iParameterDTO) {
-        Set<Sensor> sensors = new HashSet<>();
-        iParameterDTO.getSensors().forEach(sensorUUID -> {
-            Optional<Sensor> sensor = sensorRepository.findById(UUID.fromString(sensorUUID));
-            sensor.ifPresent(sensors::add);
-        });
-        Parameter persistenceParameter = parameterService.populateParameter(iParameterDTO, sensors, new Parameter());
+    public ResponseEntity<Object> createParameter(@Valid @RequestBody ParameterDTO parameterDTO) {
+        Parameter persistenceParameter = parameterService.populateParameter(parameterDTO, new Parameter());
         try {
             parameterRepository.save(persistenceParameter);
             HttpHeaders responseHeaders = new HttpHeaders();

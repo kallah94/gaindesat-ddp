@@ -2,7 +2,6 @@ package com.gaindesat.ddp.dto;
 
 import com.gaindesat.ddp.models.Parameter;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,9 +12,9 @@ public class SensorDTO {
     private String name;
     private String type;
     private UUID  stationUuid;
-    private Set<Parameter> parameters;
+    private Set<String> parameters;
 
-    public SensorDTO(UUID uuid, String code, String name, String type, Set<Parameter> parameters) {
+    public SensorDTO(UUID uuid, String code, String name, String type, Set<String> parameters) {
         this.uuid = uuid;
         this.code = code;
         this.name = name;
@@ -28,7 +27,7 @@ public class SensorDTO {
                      String name,
                      String type,
                      UUID stationUuid,
-                     Set<Parameter> parameters) {
+                     Set<String> parameters) {
         this.uuid = uuid;
         this.code = code;
         this.name = name;
@@ -70,11 +69,11 @@ public class SensorDTO {
         this.type = type;
     }
 
-    public Set<Parameter> getParameters() {
+    public Set<String> getParameters() {
         return parameters;
     }
 
-    public void setParameters(Set<Parameter> parameters) {
+    public void setParameters(Set<String> parameters) {
         this.parameters = parameters;
     }
 

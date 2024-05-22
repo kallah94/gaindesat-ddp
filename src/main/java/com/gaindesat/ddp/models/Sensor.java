@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "TB_capteur")
@@ -24,19 +27,18 @@ public class Sensor implements Serializable {
     @Column(name = "type", nullable = false)
     private String type;
 
+    @ElementCollection
+    @CollectionTable(name = "sensor_parameters", joinColumns = @JoinColumn(name = "sensor_id"))
+    @Column(name = "parameter")
+    private Set<String> parameters;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "sensorDataCollector_id")
     private SensorDataCollector sensorDataCollector;
 
-    @ManyToMany
-    @JoinTable(
-            name = "TB_sensor_parameters",
-            joinColumns = @JoinColumn(name = "sensor_uuid"),
-            inverseJoinColumns = @JoinColumn(name = "parameter_uuid")
-    )
-    private Set<Parameter> parameters = new HashSet<>();
+    // Getters and Setters, equals and hashCode methods
+
     public UUID getUuid() {
         return uuid;
     }
@@ -65,7 +67,6 @@ public class Sensor implements Serializable {
         this.type = type;
     }
 
-
     public SensorDataCollector getSensorDataCollector() {
         return sensorDataCollector;
     }
@@ -74,30 +75,34 @@ public class Sensor implements Serializable {
         this.sensorDataCollector = sensorDataCollector;
     }
 
-    public Set<Parameter> getParameters() {
+    public Set<String> getParameters() {
         return parameters;
     }
 
-    public void setParameters(Set<Parameter> parameters) {
+    public void setParameters(Set<String> parameters) {
         this.parameters = parameters;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Sensor)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Sensor sensor = (Sensor) o;
-        return Objects.equals(uuid, sensor.uuid)
-                &&
-                Objects.equals(getCode(), sensor.getCode())
-                &&
-                Objects.equals(getName(), sensor.getName())
-                &&
-                Objects.equals(getType(), sensor.getType());
+        return Objects.equals(uuid, sensor.uuid) && Objects.equals(code, sensor.code) && Objects.equals(name, sensor.name) && Objects.equals(type, sensor.type) && Objects.equals(sensorDataCollector, sensor.sensorDataCollector);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, getCode(), getName(), getType());
+        return Objects.hash(uuid, code, name, type, sensorDataCollector);
+    }
+
+    @Override
+    public String toString() {
+        return "Sensor{" +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", sensorDataCollector=" + sensorDataCollector +
+                '}';
     }
 }

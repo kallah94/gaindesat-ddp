@@ -14,6 +14,7 @@ public class SensorService implements SensorServiceInterface {
         sensor.setName(sensorDTO.getName());
         sensor.setType(sensorDTO.getType());
         sensor.setSensorDataCollector(sensorDataCollector);
+        sensor.setParameters(sensorDTO.getParameters());
         return sensor;
     }
 
