@@ -104,7 +104,13 @@ public class SensorController {
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteSensor(@PathVariable UUID sensorId) {
-        sensorRepository.deleteById(sensorId);
-        return new ResponseEntity<>("sensor removed successfully", HttpStatus.OK);
+        try {
+            sensorRepository.deleteById(sensorId);
+            return new ResponseEntity<>("{\"message\" :\"sensor removed successfully\"}", HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>("{\"message\" :\"Error Occur Sensor not removed\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
     }
 }
