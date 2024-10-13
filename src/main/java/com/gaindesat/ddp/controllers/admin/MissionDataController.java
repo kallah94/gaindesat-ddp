@@ -40,15 +40,28 @@ public class MissionDataController {
         Iterable<MissionData> allMissionData = this.missionDataRepository.findAll();
         List<MissionDataDTO> missionDataDTOList = new ArrayList<>();
         allMissionData.forEach(missionData -> {
-            MissionDataDTO missionDataDTO = new MissionDataDTO(
-                    missionData.getUuid(),
-                    missionData.getDate(),
-                    missionData.getParameter(),
-                    missionData.getUnit(),
-                    missionData.getValue(),
-                    missionData.getSensor().getCode()
-            );
-            missionDataDTOList.add(missionDataDTO);
+            try {
+                MissionDataDTO missionDataDTO = new MissionDataDTO(
+                        missionData.getUuid(),
+                        missionData.getDate(),
+                        missionData.getParameter(),
+                        missionData.getUnit(),
+                        missionData.getValue(),
+                        missionData.getSensor().getCode()
+                );
+                missionDataDTOList.add(missionDataDTO);
+            } catch (Exception e) {
+                MissionDataDTO missionDataDTO = new MissionDataDTO(
+                        missionData.getUuid(),
+                        missionData.getDate(),
+                        missionData.getParameter(),
+                        missionData.getUnit(),
+                        missionData.getValue(),
+                        "Unknown"
+                );
+                missionDataDTOList.add(missionDataDTO);
+            }
+
         });
         return new ResponseEntity<>(missionDataDTOList, HttpStatus.OK);
     }
@@ -94,7 +107,8 @@ public class MissionDataController {
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> createMissionDataFromDT(@RequestBody MissionDataDTOFromDT missionDataDTOFromDT) {
-        Optional<Sensor> missionDataSensor = missionDataService.missionDataSensor(missionDataDTOFromDT.getId_station(), missionDataDTOFromDT.getSensor_id());
+        System.out.println("test endpoint");
+        /*Optional<Sensor> missionDataSensor = missionDataService.missionDataSensor(missionDataDTOFromDT.getId_station(), missionDataDTOFromDT.getSensor_id());
         try{
             if (missionDataSensor.isPresent()) {
                 MissionData missionData = new MissionData();
@@ -105,11 +119,19 @@ public class MissionDataController {
                 missionData.setDate(missionDataDTOFromDT.getMeasure_timestamp());
                 missionDataRepository.save(missionData);
                 return new ResponseEntity<>(missionDataDTOFromDT, HttpStatus.OK);
-            }
-            return new ResponseEntity<>("not saved", HttpStatus.INTERNAL_SERVER_ERROR);
+            } else {*/
+                MissionData unknownMissionData = new MissionData();
+                unknownMissionData.setDate(missionDataDTOFromDT.getMeasure_timestamp());
+                unknownMissionData.setParameter(missionDataDTOFromDT.getParameter_type());
+                unknownMissionData.setValue(missionDataDTOFromDT.getParameter_value());
+                unknownMissionData.setUnit(missionDataDTOFromDT.getUnit());
+                missionDataRepository.save(unknownMissionData);
+                System.out.println(unknownMissionData.getValue());
+                return new ResponseEntity<>(unknownMissionData, HttpStatus.CREATED);
+           /* }
         } catch (Exception e) {
             return new ResponseEntity<>("Error occur", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        }*/
     }
 
     @DeleteMapping("/mission-data/{missionDataId}")

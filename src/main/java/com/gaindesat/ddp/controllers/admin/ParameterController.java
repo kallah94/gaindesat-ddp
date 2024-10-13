@@ -87,7 +87,7 @@ public class ParameterController {
         }
     }
 
-    @DeleteMapping("/paremeters/{parameterUUID}")
+    @DeleteMapping("/parameters/{parameterUUID}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @Produces(MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteParameter(@PathVariable UUID parameterUUID) {
